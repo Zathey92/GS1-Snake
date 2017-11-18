@@ -4,6 +4,7 @@ import entities.Entity;
 import main.ActionManager;
 import main.DisplayManager;
 import main.InputManager;
+import states.MenuState;
 
 import java.awt.*;
 
@@ -15,6 +16,7 @@ public class Button extends Entity {
     private int[] param;
     private String text;
     private Font font;
+    private boolean hasBorder;
 
 
     public Button(int x, int y, int width, int heigth, int action, int[] param, String text, Font font) {
@@ -55,6 +57,7 @@ public class Button extends Entity {
     public void init() {
         Graphics g = DisplayManager.getInstance().getCanvas().getGraphics();
         FontMetrics metrics = g.getFontMetrics(font);
+        hasBorder = false;
         acent = metrics.getAscent();
         decent = metrics.getDescent();
         textWidth = metrics.stringWidth(text);
@@ -63,11 +66,19 @@ public class Button extends Entity {
 
     @Override
     public void render(Graphics g) {
+        if(hasBorder){
+            g.setColor(Color.black);
+            g.fillRect(x-3,y-3,width+6,heigth+6);
+        }
         g.setColor(Color.BLUE);
         g.fillRect(x,y,width,heigth);
         g.setColor(Color.WHITE);
         g.setFont(font);
         g.drawString(text,x+(width-textWidth)/2,y+(heigth-textHeight)/2 + acent);
+    }
+
+    public void setBorder(boolean hasBorder) {
+        this.hasBorder = hasBorder;
     }
 
     public void action(){

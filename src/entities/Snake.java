@@ -42,10 +42,10 @@ public class Snake extends Entity {
             movement = 3;
         }
         if(input.isPressed("RIGHT")){
-            movement = 2;
+            movement = 0;
         }
         if(input.isPressed("LEFT")){
-            movement = 0;
+            movement = 2;
             logger.log(Level.WARNING, String.valueOf(movement));
         }
         switch (movement){

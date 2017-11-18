@@ -1,9 +1,6 @@
 package main;
 
-import states.GameMenuState;
-import states.MenuState;
-import states.OriginalGameState;
-import states.State;
+import states.*;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -12,8 +9,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class StateManager {
-    public static final int MENU = 0;
+    public static final int GAME_MENU = 0;
     public static final int ORIGINALGAME = 1;
+    public static final int LEADERBOARD = 2;
+
     private static StateManager instance = null;
     private int currentState;
     private List<State> states= new ArrayList<State>();
@@ -25,6 +24,7 @@ public class StateManager {
         logger = Logger.getLogger(getClass().getName());
         states.add(new GameMenuState());
         states.add(new OriginalGameState());
+        states.add(new LeaderBoardState());
         init();
     }
     /* No Tocar */
@@ -32,7 +32,7 @@ public class StateManager {
         for (State state: states){
             state.init();
         }
-        currentState = MENU;
+        currentState = GAME_MENU;
     }
     public void update(){
         if(!isPaused) {
@@ -45,6 +45,7 @@ public class StateManager {
     public void setState(int state){
         if(states.size()>state) {
             currentState = state;
+            logger.log(Level.INFO,"Cambiando el estado ("+state+")");
         }else{
             logger.log(Level.SEVERE,"No se ha encontrado ningún estado con la id ("+state+")");
         }
