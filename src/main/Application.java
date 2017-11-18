@@ -1,5 +1,7 @@
 package main;
 
+import org.omg.CORBA.Request;
+
 import java.awt.*;
 import java.awt.image.BufferStrategy;
 import java.util.logging.Level;
@@ -18,6 +20,7 @@ public class Application implements Runnable {
         stateManager = StateManager.getInstance();
         canvas = DisplayManager.getInstance().getCanvas();
         canvas.addKeyListener(InputManager.getInstance());
+        canvas.requestFocus();
 
     }
     public void run() {

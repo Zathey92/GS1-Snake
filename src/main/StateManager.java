@@ -1,5 +1,6 @@
 package main;
 
+import states.GameMenuState;
 import states.MenuState;
 import states.OriginalGameState;
 import states.State;
@@ -22,7 +23,7 @@ public class StateManager {
     /* Añadir nuevos Estados aqui */
     protected StateManager(){
         logger = Logger.getLogger(getClass().getName());
-        states.add(new MenuState());
+        states.add(new GameMenuState());
         states.add(new OriginalGameState());
         init();
     }

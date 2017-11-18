@@ -22,7 +22,7 @@ public class DisplayManager extends JFrame {
         setPreferredSize(new Dimension(600,600));
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         add(canvas);
-        Frame frame = this;
+        final Frame frame = this;
         this.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosing(java.awt.event.WindowEvent windowEvent) {
@@ -40,6 +40,7 @@ public class DisplayManager extends JFrame {
             }
         });
         pack();
+
         setVisible(true);
     }
 

@@ -13,6 +13,7 @@ public class Snake extends Entity {
     public boolean turn;
     public Color color;
     private InputManager input;
+    private int movement;
 
     public Snake(int x, int y,int width,int height) {
         super(x, y);
@@ -27,30 +28,44 @@ public class Snake extends Entity {
         turn = false;
         color = Color.BLUE;
         input = InputManager.getInstance();
+        movement = 0;
+        logger.log(Level.WARNING, String.valueOf(movement));
     }
 
     @Override
     public void update() {
-        if(x>=100){
-            turn = true;
-        }
-        if(x<0){
-            turn = false;
-        }
-        if(turn){
-            x--;
-            color = Color.RED;
-        }else{
-            x++;
-            color = Color.BLUE;
-        }
 
         if(input.isPressed("UP")){
-            y--;
+            movement = 1;
         }
         if(input.isPressed("DOWN")){
-            y++;
+            movement = 3;
         }
+        if(input.isPressed("RIGHT")){
+            movement = 2;
+        }
+        if(input.isPressed("LEFT")){
+            movement = 0;
+            logger.log(Level.WARNING, String.valueOf(movement));
+        }
+        switch (movement){
+            case 0:
+                x++;
+                break;
+            case 1:
+                y--;
+                break;
+            case 2:
+                x--;
+                break;
+            case 3:
+                y++;
+                break;
+
+            default:
+                logger.log(Level.WARNING, "Direccion erronea");
+        }
+
     }
 
     @Override

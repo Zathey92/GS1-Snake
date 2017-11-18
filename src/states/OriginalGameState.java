@@ -24,6 +24,8 @@ public class OriginalGameState extends State {
         InputManager input = InputManager.getInstance();
         input.addMapping("UP", KeyEvent.VK_UP);
         input.addMapping("DOWN", KeyEvent.VK_DOWN);
+        input.addMapping("LEFT", KeyEvent.VK_LEFT);
+        input.addMapping("RIGHT", KeyEvent.VK_RIGHT);
         super.init();
     }
 }

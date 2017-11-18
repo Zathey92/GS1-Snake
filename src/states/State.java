@@ -8,7 +8,7 @@ import java.util.List;
 
 public abstract class State {
 
-    private List<Entity> entities= new ArrayList<Entity>();
+    protected List<Entity> entities= new ArrayList<Entity>();
 
     public void addEntity(Entity e){
         this.entities.add(e);
