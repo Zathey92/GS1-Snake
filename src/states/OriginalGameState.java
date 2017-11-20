@@ -1,7 +1,9 @@
 package states;
 
 import entities.Entity;
+import entities.Food;
 import entities.Snake;
+import main.DisplayManager;
 import main.InputManager;
 
 import java.awt.*;
@@ -15,7 +17,9 @@ public class OriginalGameState extends State {
 
     public OriginalGameState(){
         logger = Logger.getLogger(getClass().getName());
-        addEntity(new Snake(0,0,150,150));
+        addEntity(new Snake(0,0,50,50));
+        addEntity(new Food(((int)(Math.random()* DisplayManager.getInstance().getHeight() - 25)),((int)(Math.random()*DisplayManager.getInstance().getWidth() - 25))));
+
     }
 
     @Override
