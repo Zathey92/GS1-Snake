@@ -5,68 +5,134 @@ import entities.Food;
 import entities.Snake;
 import main.DisplayManager;
 import main.InputManager;
+import main.StateManager;
 
+import javax.swing.*;
+import javax.xml.stream.Location;
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class OriginalGameState extends State {
-    //private CollisionManager some;
+
+    private static double cellWidth = 0.0;
+    private static Point location;
+    private Food food;
+    private Snake snake;
     private Logger logger;
-    private Snake temp;
-    private Food temp1;
-    private int temp2;
-    private int temp3;
+    private static final int cellNumber = 20 ;
+    Canvas canvas;
 
     public OriginalGameState(){
-        temp2 = DisplayManager.getInstance().getCanvas().getHeight();
-        temp3 = DisplayManager.getInstance().getCanvas().getWidth()-48;
-        temp = new Snake(0,0,50,50);
-        temp1 = new Food(((int)(Math.random()* temp2)),((int)(Math.random()*temp3)));
         logger = Logger.getLogger(getClass().getName());
-        addEntity(temp);
-        addEntity(temp1);
-        //some = new CollisionManager();
+        canvas = DisplayManager.getInstance().getCanvas();
+        cellWidth = canvas.getWidth()/cellNumber;
+
+        if((cellWidth % 1) != 0){
+            logger.severe("BOP");
+        }
+
+        logger = Logger.getLogger(getClass().getName());
+        snake = new Snake(0,0,(int)cellWidth);
+        addEntity(snake);
+        generatePosition();
+        food = new Food(location.x,location.y,(int)cellWidth);
+        addEntity(food);
     }
 
     @Override
     public void init() {
+        canvas.setBackground(new Color(225,225,225));
         logger.log(Level.INFO," Iniciando Mappeo");
         InputManager input = InputManager.getInstance();
         input.addMapping("UP", KeyEvent.VK_UP);
         input.addMapping("DOWN", KeyEvent.VK_DOWN);
-        input.addMapping("LEFT", KeyEvent.VK_LEFT);
         input.addMapping("RIGHT", KeyEvent.VK_RIGHT);
+        input.addMapping("LEFT", KeyEvent.VK_LEFT);
         super.init();
-        //some.init();
+    }
+    @Override
+    public void render(Graphics g){
+        drawGrid(g);
+        super.render(g);
+
     }
 
     @Override
     public void update(){
+        checkCollision();
         super.update();
-        //some.update();
-        Rectangle sr = new Rectangle(temp.x, temp.y, 50, 50);
-        Rectangle fr = new Rectangle(temp1.x, temp1.y, 25, 25);
-        if (sr.intersects(fr)) {
+    }
 
+    private void drawGrid(Graphics g) {
+        for (int i = cellNumber-1; i > 0; i--) {
+            int y =  (i*(int)cellWidth);
+            g.drawLine(0,y,canvas.getWidth(),y);
 
-            System.out.println(temp2 + "    " + temp3);
-            int temp4 = (int)(Math.random()* temp2);
-            int temp5 = (int)(Math.random()* temp3);
-            if(temp4 < 0){
-                temp4 = 0;
-            }else if(temp4 > temp2){
-                temp4 = temp2;
-            }
-            if (temp3 < 0){
-                temp5 = 0;
-            }else if(temp5 > temp3){
-                temp5 = temp3;
-            }
-            System.out.println(temp4 + "     " + temp5);
-            temp1.x =  temp4;
-            temp1.y = temp5;
+        }
+        for (int i = cellNumber-1; i > 0; i--) {
+            int x =  (i*(int)cellWidth);
+            g.drawLine(x,0,x,canvas.getHeight());
         }
     }
+
+    public static Point getLocation(){return location;}
+
+    public static void generatePosition(){
+        int xaux = ((int) (Math.random() * cellNumber));
+        int yaux = ((int) (Math.random() * cellNumber));
+        location = new Point(xaux*(int)cellWidth,yaux*(int)cellWidth);
+    }
+
+    public void checkCollision(){
+        int snakeX = snake.getHeadPosition().x;
+        int snakeY = snake.getHeadPosition().y;
+        snakeOutOfBound(snakeX, snakeY);
+        snakeCollision(snakeX, snakeY);
+        snakeFoodCollision(snakeX,snakeY);
+    }
+
+    private void snakeFoodCollision(int x, int y) {
+        if(x == food.x && y == food.y){
+            snake.setGrow(true);
+            generatePosition();
+            foodCollision(x, y);
+            food.setHasCollide(true);
+        }
+    }
+
+    private void snakeOutOfBound(int x, int y) {
+        if(x > DisplayManager.getInstance().getWidth() || x < 0
+            || y > DisplayManager.getInstance().getHeight() || y < 0)
+            gameOver();
+    }
+
+    public void snakeCollision(int x, int y){
+        LinkedList<Point> temp = snake.getQueue();
+        temp.removeFirst();
+        for(Point Snake : temp){
+            if (Snake.x == x && Snake.y == y){
+                gameOver();
+            }
+        }
+    }
+
+    private void gameOver() {
+        JOptionPane.showMessageDialog(DisplayManager.getInstance(), "YOU LOSE");
+        snake.resetSnake();
+        StateManager.getInstance().setState(StateManager.GAME_MENU);
+    }
+
+    public void foodCollision(int x, int y){
+        LinkedList<Point> temp = snake.getQueue();
+        for(Point Snake : temp){
+            if(Snake.x == location.x && Snake.y == location.y){
+                generatePosition();
+                foodCollision(x,y);
+            }
+        }
+    }
+
 }
