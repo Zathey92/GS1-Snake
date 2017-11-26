@@ -62,7 +62,10 @@ public class OriginalGameState extends State {
 
     @Override
     public void update(){
-        checkCollision();
+        int snakeX = snake.getHeadPosition().x;
+        int snakeY = snake.getHeadPosition().y;
+        snakeCollision(snakeX, snakeY);
+        snakeFoodCollision(snakeX,snakeY);
         super.update();
     }
 
@@ -80,20 +83,6 @@ public class OriginalGameState extends State {
 
     public static Point getLocation(){return location;}
 
-    public static void generatePosition(){
-        int xaux = ((int) (Math.random() * cellNumber));
-        int yaux = ((int) (Math.random() * cellNumber));
-        location = new Point(xaux*(int)cellWidth,yaux*(int)cellWidth);
-    }
-
-    public void checkCollision(){
-        int snakeX = snake.getHeadPosition().x;
-        int snakeY = snake.getHeadPosition().y;
-        snakeOutOfBound(snakeX, snakeY);
-        snakeCollision(snakeX, snakeY);
-        snakeFoodCollision(snakeX,snakeY);
-    }
-
     private void snakeFoodCollision(int x, int y) {
         if(x == food.x && y == food.y){
             snake.setGrow(true);
@@ -103,26 +92,12 @@ public class OriginalGameState extends State {
         }
     }
 
-    private void snakeOutOfBound(int x, int y) {
+    private void snakeCollision(int x, int y) {
         if(x > DisplayManager.getInstance().getWidth() || x < 0
-            || y > DisplayManager.getInstance().getHeight() || y < 0)
+            || y > DisplayManager.getInstance().getHeight() || y < 0) {
             gameOver();
-    }
-
-    public void snakeCollision(int x, int y){
-        LinkedList<Point> temp = snake.getQueue();
-        temp.removeFirst();
-        for(Point Snake : temp){
-            if (Snake.x == x && Snake.y == y){
-                gameOver();
-            }
         }
-    }
-
-    private void gameOver() {
-        JOptionPane.showMessageDialog(DisplayManager.getInstance(), "YOU LOSE");
-        snake.resetSnake();
-        StateManager.getInstance().setState(StateManager.GAME_MENU);
+        if(snake.checkSelfCollision())gameOver();
     }
 
     public void foodCollision(int x, int y){
@@ -133,6 +108,18 @@ public class OriginalGameState extends State {
                 foodCollision(x,y);
             }
         }
+    }
+
+    public static void generatePosition(){
+        int xaux = ((int) (Math.random() * cellNumber));
+        int yaux = ((int) (Math.random() * cellNumber));
+        location = new Point(xaux*(int)cellWidth,yaux*(int)cellWidth);
+    }
+
+    private void gameOver() {
+        JOptionPane.showMessageDialog(DisplayManager.getInstance(), "YOU LOSE");
+        snake.resetSnake();
+        StateManager.getInstance().setState(StateManager.GAME_MENU);
     }
 
 }
