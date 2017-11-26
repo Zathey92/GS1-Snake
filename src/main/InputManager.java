@@ -1,28 +1,52 @@
 package main;
 
-import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.List;
-import main.Key;
 
 public class InputManager implements KeyListener {
     private static InputManager instance = null;
-    public List<Key> keys = new ArrayList<Key>();
+    public List<Key> keys = new ArrayList<>();
 
-    public InputManager(){
-        Canvas canvas = DisplayManager.getInstance().getCanvas();
+
+    public void addMapping(String s, int keyCode, int limit){
+        for(Key key: keys){
+            if(s.equals(key.name)){
+               return;
+            }
+        }
+        keys.add(new Key(s,keyCode,limit));
     }
 
     public void addMapping(String s, int keyCode){
+        for(Key key: keys){
+            if(s.equals(key.name)){
+                return;
+            }
+        }
         keys.add(new Key(s,keyCode));
     }
+
+    //public void clearMapping(){ keys = new ArrayList<>(); }
 
     public boolean isPressed(String s){
         for(Key key: keys){
             if(s.equals(key.name)){
                 return key.pressed;
+            }
+        }
+        return false;
+    }
+
+
+    public boolean isFired(String s) {
+        boolean aux;
+        for(Key key: keys){
+            if(s.equals(key.name)){
+                aux = key.fired;
+                key.fired = false;
+                return aux;
             }
         }
         return false;

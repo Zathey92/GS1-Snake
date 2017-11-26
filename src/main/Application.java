@@ -1,7 +1,5 @@
 package main;
 
-import org.omg.CORBA.Request;
-
 import java.awt.*;
 import java.awt.image.BufferStrategy;
 import java.util.logging.Level;
@@ -10,9 +8,14 @@ import java.util.logging.Logger;
 public class Application implements Runnable {
     private Thread thread;
     public static Boolean isRunning;
+    public final static double amountOfTicks = 60.0; //Numero de updates por segundo
+
     private Logger logger;
     private Canvas canvas;
     private StateManager stateManager;
+    private SoundManager soundManager;
+
+
 
     public Application(){
         //Iniciamos las clases Manager
@@ -20,13 +23,13 @@ public class Application implements Runnable {
         stateManager = StateManager.getInstance();
         canvas = DisplayManager.getInstance().getCanvas();
         canvas.addKeyListener(InputManager.getInstance());
-        canvas.requestFocus();
-
+        soundManager = SoundManager.getInstance();
     }
+
     public void run() {
         logger.log(Level.INFO," Aplication Running");
         long lastTime = System.nanoTime();
-        final double amountOfTicks = 60.0; //Numero de updates por segundo
+
         double ns = 100000000 / amountOfTicks;
         double delta = 0;
         int updates = 0;
@@ -59,6 +62,7 @@ public class Application implements Runnable {
         isRunning=true;
         thread.start();
     }
+
     public void stop(){
         try {
             thread.join();

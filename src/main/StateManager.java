@@ -12,10 +12,11 @@ public class StateManager {
     public static final int GAME_MENU = 0;
     public static final int ORIGINALGAME = 1;
     public static final int LEADERBOARD = 2;
+    public static final int SELECTGAME= 3;
 
     private static StateManager instance = null;
     private int currentState;
-    private List<State> states= new ArrayList<State>();
+    private List<State> states= new ArrayList<>();
     Logger logger;
     public boolean isPaused;
 
@@ -25,6 +26,7 @@ public class StateManager {
         states.add(new GameMenuState());
         states.add(new OriginalGameState());
         states.add(new LeaderBoardState());
+        states.add(new SelectGameState());
         init();
     }
     /* No Tocar */
@@ -43,6 +45,8 @@ public class StateManager {
         states.get(currentState).render(g);
     }
     public void setState(int state){
+        SoundManager.getInstance().stopAll();
+
         if(states.size()>state) {
             currentState = state;
             logger.log(Level.INFO,"Cambiando el estado ("+state+")");

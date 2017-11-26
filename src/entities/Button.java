@@ -1,22 +1,19 @@
 package entities;
 
-import entities.Entity;
 import main.ActionManager;
 import main.DisplayManager;
-import main.InputManager;
-import states.MenuState;
 
 import java.awt.*;
 
 public class Button extends Entity {
-    private int width, heigth;
-    private int textHeight,textWidth;
-    private int acent , decent;
-    private int action;
-    private int[] param;
-    private String text;
-    private Font font;
-    private boolean hasBorder;
+    protected int width, heigth;
+    protected int textHeight,textWidth;
+    protected int acent , decent;
+    protected int action;
+    protected int[] param;
+    protected String text;
+    protected Font font;
+    protected boolean selected;
 
 
     public Button(int x, int y, int width, int heigth, int action, int[] param, String text, Font font) {
@@ -57,7 +54,7 @@ public class Button extends Entity {
     public void init() {
         Graphics g = DisplayManager.getInstance().getCanvas().getGraphics();
         FontMetrics metrics = g.getFontMetrics(font);
-        hasBorder = false;
+        selected = false;
         acent = metrics.getAscent();
         decent = metrics.getDescent();
         textWidth = metrics.stringWidth(text);
@@ -66,19 +63,19 @@ public class Button extends Entity {
 
     @Override
     public void render(Graphics g) {
-        if(hasBorder){
-            g.setColor(Color.black);
-            g.fillRect(x-3,y-3,width+6,heigth+6);
+        g.setColor(new Color(160,160,160));
+        if(selected){
+            g.setColor(new Color(200,200,200));
+            g.fillRect(x,y,width,heigth);
         }
-        g.setColor(Color.BLUE);
         g.fillRect(x,y,width,heigth);
-        g.setColor(Color.WHITE);
+        g.setColor(Color.BLACK);
         g.setFont(font);
         g.drawString(text,x+(width-textWidth)/2,y+(heigth-textHeight)/2 + acent);
     }
 
-    public void setBorder(boolean hasBorder) {
-        this.hasBorder = hasBorder;
+    public void setSelected(boolean isSelected) {
+        this.selected = isSelected;
     }
 
     public void action(){

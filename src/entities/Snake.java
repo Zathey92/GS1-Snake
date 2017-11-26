@@ -133,6 +133,15 @@ public class Snake extends Entity {
         return result;
     }
 
+    public boolean hasSnake(int x, int y){
+        for(Point Snake : queue){
+            if(Snake.x == x && Snake.y == y){
+                return true;
+            }
+        }
+        return false;
+    }
+
     public boolean checkSelfCollision() {
         LinkedList<Point> temp = getQueue();
         temp.removeFirst();

@@ -1,124 +1,127 @@
 package states;
 
-import entities.Entity;
 import entities.Food;
+import entities.Score;
 import entities.Snake;
 import main.DisplayManager;
 import main.InputManager;
+import main.SoundManager;
 import main.StateManager;
 
 import javax.swing.*;
-import javax.xml.stream.Location;
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class OriginalGameState extends State {
-
+    private int FREQUENCY;
     private static double cellWidth = 0.0;
-    private static Point location;
     private Food food;
     private Snake snake;
+    private Score score;
     private Logger logger;
     private static final int cellNumber = 20 ;
     Canvas canvas;
+    private SoundManager soundManager;
 
     public OriginalGameState(){
+
         logger = Logger.getLogger(getClass().getName());
         canvas = DisplayManager.getInstance().getCanvas();
-        cellWidth = canvas.getWidth()/cellNumber;
-
+        cellWidth = (canvas.getWidth()-200)/cellNumber;
         if((cellWidth % 1) != 0){
             logger.severe("BOP");
         }
-
+        score = new Score();
+        addEntity(score);
         logger = Logger.getLogger(getClass().getName());
-        snake = new Snake(0,0,(int)cellWidth);
+        snake = new Snake((int)(200+(cellNumber/2)*cellWidth), (int) ((cellNumber/2)*cellWidth),(int)cellWidth);
         addEntity(snake);
-        generatePosition();
+        Point location = generatePosition();
         food = new Food(location.x,location.y,(int)cellWidth);
         addEntity(food);
     }
 
     @Override
     public void init() {
-        canvas.setBackground(new Color(225,225,225));
+        canvas.setBackground(new Color(50,50,50));
         logger.log(Level.INFO," Iniciando Mappeo");
         InputManager input = InputManager.getInstance();
         input.addMapping("UP", KeyEvent.VK_UP);
         input.addMapping("DOWN", KeyEvent.VK_DOWN);
         input.addMapping("RIGHT", KeyEvent.VK_RIGHT);
         input.addMapping("LEFT", KeyEvent.VK_LEFT);
+        soundManager = SoundManager.getInstance();
+        soundManager.add("menuSelect","cartoon135.wav");
+
         super.init();
     }
     @Override
     public void render(Graphics g){
         drawGrid(g);
         super.render(g);
-
     }
 
     @Override
     public void update(){
+        super.update();
         int snakeX = snake.getHeadPosition().x;
         int snakeY = snake.getHeadPosition().y;
         snakeCollision(snakeX, snakeY);
         snakeFoodCollision(snakeX,snakeY);
-        super.update();
+
     }
 
     private void drawGrid(Graphics g) {
+        g.setColor(new Color(160,160,160));
+        g.fillRect(200,0,canvas.getWidth()-200,canvas.getHeight());
+        g.setColor(Color.black);
+
         for (int i = cellNumber-1; i > 0; i--) {
             int y =  (i*(int)cellWidth);
-            g.drawLine(0,y,canvas.getWidth(),y);
+            g.drawLine(200,y,canvas.getWidth(),y);
 
         }
-        for (int i = cellNumber-1; i > 0; i--) {
+        for (int i = cellNumber; i > 0; i--) {
             int x =  (i*(int)cellWidth);
-            g.drawLine(x,0,x,canvas.getHeight());
+            g.drawLine(x+200,0,x+200,canvas.getHeight());
         }
+        g.fillRect(196,0,4,canvas.getHeight());
     }
 
-    public static Point getLocation(){return location;}
 
     private void snakeFoodCollision(int x, int y) {
         if(x == food.x && y == food.y){
+            soundManager.start("menuSelect");
+
             snake.setGrow(true);
-            generatePosition();
-            foodCollision(x, y);
-            food.setHasCollide(true);
+            Point location = generatePosition();
+            while(snake.hasSnake(location.x,location.y)){
+                location = generatePosition();
+            }
+            food.setHasCollide(location);
+            score.setHasCollide(true);
         }
     }
 
-    private void snakeCollision(int x, int y) {
-        if(x > DisplayManager.getInstance().getWidth() || x < 0
-            || y > DisplayManager.getInstance().getHeight() || y < 0) {
+    private void snakeCollision(int snakeX, int snakeY) {
+        if(snakeX >= (canvas.getWidth()) || snakeX < 200 || snakeY >= (canvas.getHeight()) || snakeY < 0) {
+            soundManager.stop("menuSelect");
             gameOver();
         }
         if(snake.checkSelfCollision())gameOver();
     }
 
-    public void foodCollision(int x, int y){
-        LinkedList<Point> temp = snake.getQueue();
-        for(Point Snake : temp){
-            if(Snake.x == location.x && Snake.y == location.y){
-                generatePosition();
-                foodCollision(x,y);
-            }
-        }
-    }
-
-    public static void generatePosition(){
+    public static Point generatePosition(){
         int xaux = ((int) (Math.random() * cellNumber));
         int yaux = ((int) (Math.random() * cellNumber));
-        location = new Point(xaux*(int)cellWidth,yaux*(int)cellWidth);
+        return new Point(xaux*(int)cellWidth+200,yaux*(int)cellWidth);
     }
 
     private void gameOver() {
         JOptionPane.showMessageDialog(DisplayManager.getInstance(), "YOU LOSE");
-        snake.resetSnake();
+        init();
         StateManager.getInstance().setState(StateManager.GAME_MENU);
     }
 
