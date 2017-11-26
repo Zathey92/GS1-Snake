@@ -11,12 +11,12 @@ public class StyledButton extends Button {
     private Image imageSelected, imageNotSelected;
 
 
-    public StyledButton(int x, int y, int width, int heigth, int action, int[] param, String string, Image imageSelected, Image imageNotSelected) {
+    public StyledButton(int x, int y, int width, int heigth, int action, int[] param, String string, String imageNotSelected, String imageSelected) {
         super(x, y, width, heigth, action, param, string);
         this.heigth = heigth;
         this.width = width;
-        this.imageSelected = imageSelected;
-        this.imageNotSelected = imageNotSelected;
+        this.imageNotSelected = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/menu/" + imageNotSelected));
+        this.imageSelected = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/menu/" + imageSelected));
     }
 
     @Override

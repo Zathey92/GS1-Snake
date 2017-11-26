@@ -1,10 +1,12 @@
 package states;
 
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 
 import entities.Button;
+import main.DisplayManager;
 import main.InputManager;
 
 public abstract class MenuState extends State {
@@ -15,6 +17,7 @@ public abstract class MenuState extends State {
 
     @Override
     public void init() {
+        DisplayManager.getInstance().getCanvas().setBackground(new Color(50,50,50));
         input = InputManager.getInstance();
         input.addMapping("ENTER", KeyEvent.VK_ENTER, KEYFRECUENCY);
         input.addMapping("UP", KeyEvent.VK_UP, KEYFRECUENCY);

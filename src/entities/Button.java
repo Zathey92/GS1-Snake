@@ -63,13 +63,13 @@ public class Button extends Entity {
 
     @Override
     public void render(Graphics g) {
+        g.setColor(new Color(160,160,160));
         if(selected){
-            g.setColor(Color.black);
-            g.fillRect(x-3,y-3,width+6,heigth+6);
+            g.setColor(new Color(200,200,200));
+            g.fillRect(x,y,width,heigth);
         }
-        g.setColor(Color.BLUE);
         g.fillRect(x,y,width,heigth);
-        g.setColor(Color.WHITE);
+        g.setColor(Color.BLACK);
         g.setFont(font);
         g.drawString(text,x+(width-textWidth)/2,y+(heigth-textHeight)/2 + acent);
     }
