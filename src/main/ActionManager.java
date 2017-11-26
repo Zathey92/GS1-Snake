@@ -1,7 +1,5 @@
 package main;
 
-import states.State;
-
 public class ActionManager {
     private static ActionManager instance = null;
     public static final int CHANGE_STATE = 0;

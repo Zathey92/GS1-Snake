@@ -1,41 +1,41 @@
 package states;
 
-import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 
 import entities.Button;
-import entities.Entity;
-import main.ActionManager;
-import main.DisplayManager;
 import main.InputManager;
-import main.StateManager;
-import static java.lang.Thread.sleep;
 
 public abstract class MenuState extends State {
     int currentButton;
-    protected List<Button> buttons = new ArrayList<Button>();
-    private int count;
+    protected List<Button> buttons = new ArrayList<>();
+    protected int KEYFRECUENCY = 1;
+    protected InputManager input;
 
     @Override
     public void init() {
-        InputManager.getInstance().addMapping("ENTER", KeyEvent.VK_ENTER);
-        InputManager.getInstance().addMapping("UP", KeyEvent.VK_UP);
-        InputManager.getInstance().addMapping("DOWN", KeyEvent.VK_DOWN);
+        input = InputManager.getInstance();
+        input.addMapping("ENTER", KeyEvent.VK_ENTER, KEYFRECUENCY);
+        input.addMapping("UP", KeyEvent.VK_UP, KEYFRECUENCY);
+        input.addMapping("DOWN", KeyEvent.VK_DOWN, KEYFRECUENCY);
         super.init();
     }
 
     @Override
     public void update(){
-        if(InputManager.getInstance().isPressed("ENTER")){
+        if(input.isFired("ENTER")){
             this.buttons.get(currentButton).action();
         }
-        if(InputManager.getInstance().isPressed("UP")){
-            countKey(false);
+        if(input.isFired("UP")){
+            this.buttons.get(currentButton).setSelected(false);
+            previousButton();
+            this.buttons.get(currentButton).setSelected(true);
         }
-        if(InputManager.getInstance().isPressed("DOWN")){
-            countKey(true);
+        if(input.isFired("DOWN")){
+            this.buttons.get(currentButton).setSelected(false);
+            nextButton();
+            this.buttons.get(currentButton).setSelected(true);
         }
         super.update();
     }
@@ -45,21 +45,6 @@ public abstract class MenuState extends State {
             currentButton--;
         }else{
             currentButton = buttons.size() - 1;
-        }
-    }
-
-    private void countKey(boolean direction){
-        count++;
-        if(count > 50){
-            count = 0;
-            System.out.println(currentButton);
-            this.buttons.get(currentButton).setBorder(false);
-            if (direction){
-                nextButton();
-            }else{
-                previousButton();
-            }
-            this.buttons.get(currentButton).setBorder(true);
         }
     }
 

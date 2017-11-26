@@ -1,5 +1,7 @@
 package states;
 
+import entities.LeaderBoard;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.time.Instant;
@@ -12,19 +14,21 @@ import java.util.logging.Logger;
 public class LeaderBoardState extends State {
     private String FILEPATH="LeaderBoard.txt";
     private Logger logger;
-    private int minimumForUpdate;
+    private LeaderBoard leaderBoardEntity;
     private ArrayList<LeaderBoardData> dataList = new ArrayList<>();
 
     @Override
     public void update() {
-        //System.out.println("HOLA MUNDO");
+
         super.init();
     }
 
     @Override
     public void init() {
         loadLeaderBoard();
-        printLeaderBoard();
+        leaderBoardEntity = new LeaderBoard(20, 20, 500,500, getText());
+        entities.add(leaderBoardEntity);
+        //printLeaderBoard();
         super.init();
     }
 
@@ -34,7 +38,16 @@ public class LeaderBoardState extends State {
             System.out.println("Puntos: " + data.getPoints());
             System.out.println("Date: " + data.getTime());
         }
-
+    }
+    public String getText(){
+        String text = "Jugador   Puntos   Fecha" + "\n";
+        for(LeaderBoardData data: dataList) {
+            text+= data.getPlayerName() + "       "+
+                   data.getPoints() + "   " +
+                   data.getTime() + "\n";
+        }
+        //System.out.println(text);
+        return text;
     }
 
     public void loadLeaderBoard(){
@@ -50,8 +63,6 @@ public class LeaderBoardState extends State {
                                                 Integer.parseInt(parts[1]),
                                                 Date.from(Instant.now())));
                                                 //Date.valueOf(parts[2])
-
-                //System.out.println(line);
 
             }
             sc.close();

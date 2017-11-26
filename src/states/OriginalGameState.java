@@ -1,10 +1,8 @@
 package states;
 
-import entities.Entity;
 import entities.Snake;
 import main.InputManager;
 
-import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.logging.Level;
 import java.util.logging.Logger;

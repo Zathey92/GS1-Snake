@@ -79,6 +79,7 @@ public class Application implements Runnable {
         }
         Graphics g = bs.getDrawGraphics();
         g.clearRect(0,0,canvas.getWidth(),canvas.getHeight());  //Limpiamos el canvas
+        g.setColor(Color.LIGHT_GRAY);
 
         stateManager.render(g); //Renderizamos el estado actual
 
