@@ -1,5 +1,6 @@
 package main;
 
+import javax.xml.crypto.dsig.keyinfo.KeyValue;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
@@ -86,7 +87,10 @@ public class InputManager implements KeyListener {
     @Override
     public void keyReleased(KeyEvent e) {
         anyKey = false;
-        if(inputText.length() < 10){
+        if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE && !inputText.isEmpty()){
+            inputText = inputText.substring(0,inputText.length()-1);
+        }
+        if(inputText.length() < 10 && Character.isLetterOrDigit(e.getKeyChar())){
             inputText += e.getKeyChar();
         }
         for(Key key: keys){

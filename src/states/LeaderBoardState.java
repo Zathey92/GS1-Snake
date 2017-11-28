@@ -1,24 +1,23 @@
 package states;
 
-import entities.Entity;
+
 import entities.LeaderBoard;
+import entities.Message;
+import main.DisplayManager;
 import main.FileManager;
 import main.LeaderBoardData;
 import main.StateManager;
-
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
-import java.util.logging.Level;
 
 public class LeaderBoardState extends State {
     private FileManager fileManager;
     private ArrayList<LeaderBoardData> dataList = new ArrayList<>();
+    private Message infoMessage1;
 
     public LeaderBoardState(){
         fileManager = FileManager.getInstance();
+        infoMessage1 = new Message( DisplayManager.getInstance().getCanvas().getWidth() - 100, DisplayManager.getInstance().getCanvas().getHeight() - 50,150,25,"ESC: Volver al menu");
     }
 
     @Override
@@ -40,20 +39,17 @@ public class LeaderBoardState extends State {
     @Override
     public void init() {
         super.init();
-        entities.add(new LeaderBoard(20, 20, 500,500, getText(fileManager.getData())));
+        entities.add(new LeaderBoard(100, 20, 400,500, getText(fileManager.getData())));
+        entities.add(infoMessage1);
     }
 
-    public String getText(List<LeaderBoardData> data){
-        String text = "Jugador   Puntos   Fecha" + "\n";
+    public ArrayList<String[]> getText(List<LeaderBoardData> data){
+        ArrayList<String[]> text = new ArrayList<>();
+        text.add(new String[]{"Jugador","Puntos", "Fecha"});
         for(LeaderBoardData score : data) {
-            text+= score.getPlayerName() + "       "+
-                    score.getPoints() + "   " +
-                    score.getTime() + "\n";
+            text.add(new String[]{score.getPlayerName(),String.valueOf(score.getPoints()),score.getTime()});
         }
-        //System.out.println(text);
         return text;
     }
-
-
 
 }

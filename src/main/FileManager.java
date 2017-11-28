@@ -61,7 +61,7 @@ public class FileManager {
     public void saveScore(String s){
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         Date date = new Date();
-        s = "Annonymous \t" + s + "\t" + dateFormat.format(date)+"\n";
+        s = s + "\t" + dateFormat.format(date)+"\n";
         byte data[] = s.getBytes();
         try (OutputStream out = new BufferedOutputStream(Files.newOutputStream(file.toPath(), CREATE, APPEND))) {
             out.write(data, 0, data.length);

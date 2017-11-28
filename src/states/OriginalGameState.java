@@ -6,13 +6,6 @@ import main.*;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Writer;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.logging.Level;
 
 public class OriginalGameState extends State {
@@ -25,7 +18,7 @@ public class OriginalGameState extends State {
     Canvas canvas;
     private SoundManager soundManager;
     private int state;
-    private Message winMessage,loseMessage,nameMessage;
+    private Message winMessage,loseMessage,nameMessage,infoMessage1,infoMessage2;
 
 
 
@@ -40,6 +33,8 @@ public class OriginalGameState extends State {
         Point location = generatePosition();
         food = new Food(location.x,location.y,(int)cellWidth);
         score = new Score(100,canvas.getHeight()/2, 150,20, ALIGN.CENTER);
+        infoMessage1 = new Message( 100, middle - 100,150,25,"ESC: Pausa/Reanudar");
+        infoMessage2 = new Message( 100, middle - 75,150,25,"Flechas: Moverse");
         winMessage = new Message(middle+200,middle,200,110,"Has ganado!", false);
         loseMessage = new Message(middle+200,middle,200,110 ,"Has perdido...", false);
         nameMessage = new Message(middle+100,middle+8,85,25 ,"Nombre:", false , new Color (200,200,200), Color.BLACK, ALIGN.LEFT, ALIGN.LEFT);
@@ -47,6 +42,8 @@ public class OriginalGameState extends State {
         addEntity(snake);
         addEntity(food);
         addEntity(score);
+        addEntity(infoMessage1);
+        addEntity(infoMessage2);
         addEntity(winMessage);
         addEntity(loseMessage);
         addEntity(nameMessage);
@@ -64,9 +61,11 @@ public class OriginalGameState extends State {
         input.addMapping("RIGHT", KeyEvent.VK_RIGHT);
         input.addMapping("LEFT", KeyEvent.VK_LEFT);
         input.addMapping("ESCAPE", KeyEvent.VK_ESCAPE, 1);
+        input.addMapping("ENTER2", KeyEvent.VK_ENTER);
         soundManager = SoundManager.getInstance();
         soundManager.add("eat","eat1.wav");
         soundManager.add("lose","lose.wav");
+        soundManager.add("win","win.wav");
         state = 0;
     }
 
@@ -102,12 +101,17 @@ public class OriginalGameState extends State {
         nameMessage.isVisible = true;
         message.isVisible = true;
         inputMessage.isVisible = true;
-        if(input.anyKey()){
-            message.isVisible = true;
-            inputMessage.isVisible = true;
-            nameMessage.isVisible = true;
-            //init();
-            //state = 0;
+        if(input.isPressed("ENTER2" )){
+            message.isVisible = false;
+            inputMessage.isVisible = false;
+            nameMessage.isVisible = false;
+            if(inputMessage.text == null){
+                FileManager.getInstance().saveScore("Annonymous" + "\t" + score.value);
+            }else{
+                FileManager.getInstance().saveScore(inputMessage.text.trim() + "\t" + score.value);
+            }
+            init();
+            state = 0;
         }
     }
 
@@ -117,7 +121,6 @@ public class OriginalGameState extends State {
         if(snake.collision){
             input.clearBuffer();
             soundManager.play("lose");
-            FileManager.getInstance().saveScore(String.valueOf(score.value));
             state = 1;
         }
         snakeFoodCollision(snakeX,snakeY);
@@ -153,7 +156,6 @@ public class OriginalGameState extends State {
             }else{
                 input.clearBuffer();
                 soundManager.play("win");
-                FileManager.getInstance().saveScore(String.valueOf(score.value));
                 state = 2;
             }
             ActionManager.getInstance().action(3,null);
