@@ -19,6 +19,7 @@ public class Snake extends Entity {
 
     private LinkedList<Point> queue;
     private double updateCounter;
+    public boolean collision;
 
     public Snake(int x, int y,int cellWidth) {
         super(x, y);
@@ -31,7 +32,7 @@ public class Snake extends Entity {
 
         freq =  Application.amountOfTicks*2;
         updateCounter = 0;
-
+        collision = false;
         isGrowing = false;
         queue = new LinkedList<>();
         queue.addFirst(new Point(x,y));
@@ -42,6 +43,7 @@ public class Snake extends Entity {
         input = InputManager.getInstance();
         isMoving = true;
     }
+
     @Override
     public void update() {
         getInput(); //sets direction
@@ -50,7 +52,6 @@ public class Snake extends Entity {
             updateCounter = 0;
             move();
         }
-
     }
 
     @Override
@@ -67,9 +68,10 @@ public class Snake extends Entity {
     }
 
     private void move() {
-        Point p = queue.get(0);
+        Point p = getHeadPosition();
         Point newP = p;
-        if(!isMoving) return;
+        if(!isMoving) return ;
+
         switch(direction){
             case "LEFT":
                 newP = new Point((int)p.getX() - cellWidth,(int) p.getY());
@@ -84,7 +86,10 @@ public class Snake extends Entity {
                 newP = new Point((int)p.getX(),(int) p.getY() + cellWidth);
                 break;
             default:
-
+        }
+        if(snakeCollision(newP)){
+            collision = true;
+            return;
         }
         if (newP == p) {
             logger.warning("Snake not moving");
@@ -96,7 +101,10 @@ public class Snake extends Entity {
             return;
         }
         queue.removeLast();
+        return;
     }
+
+
 
     private void getInput() {
         if(input.isPressed("LEFT") && !direction.equals("RIGHT")){
@@ -149,5 +157,14 @@ public class Snake extends Entity {
             }
         }
         return false;
+    }
+
+    public boolean snakeCollision(Point newP) {
+        Canvas canvas = DisplayManager.getInstance().getCanvas();
+        Point snakeHead = getHeadPosition();
+        if(newP.x >= (canvas.getWidth()) || newP.x < 200 || newP.y >= (canvas.getHeight()) || newP.y < 0) {
+            return true;
+        }
+        return checkSelfCollision();
     }
 }

@@ -43,7 +43,7 @@ public class DisplayManager extends JFrame {
         setResizable(false);
         pack();
         setVisible(true);
-        canvas.requestFocus();
+        this.requestFocus();
     }
 
     public Canvas getCanvas(){

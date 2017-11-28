@@ -5,7 +5,9 @@ public class ActionManager {
     public static final int CHANGE_STATE = 0;
     public static final int EXIT = 1;
     public static final int LEADERBOARD = 2;
-    public static final int CONTINUE = 3;
+    public static final int CLOSEWIN = 3;
+    public static final int CLOSELOSE = 4;
+
 
     public void changeState(int state){
         StateManager.getInstance().setState(state);
@@ -22,7 +24,10 @@ public class ActionManager {
             case EXIT:
                 Application.isRunning = false;
                 break;
-            case CONTINUE:
+            case CLOSEWIN:
+
+                break;
+            case CLOSELOSE:
                 break;
         }
     }

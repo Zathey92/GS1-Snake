@@ -5,14 +5,16 @@ import main.ActionManager;
 import main.DisplayManager;
 import main.StateManager;
 
+import java.awt.*;
+
 public class SelectGameState extends MenuState {
 
     @Override
     public void init() {
-
-        buttons.add(new StyledButton((DisplayManager.getInstance().getCanvas().getWidth()/2)-50,(DisplayManager.getInstance().getCanvas().getHeight()/4),105, 56, ActionManager.CHANGE_STATE, new int[]{StateManager.ORIGINALGAME}, "", "S_boton1.png", "boton1.png"));
-        buttons.add(new StyledButton((DisplayManager.getInstance().getCanvas().getWidth()/2)-50,(DisplayManager.getInstance().getCanvas().getHeight()/4 + 100),105, 56, ActionManager.CHANGE_STATE, new int[]{StateManager.ORIGINALGAME}, "","S_boton2.png","boton2.png"));
-        buttons.add(new StyledButton((DisplayManager.getInstance().getCanvas().getWidth()/2)-50,(DisplayManager.getInstance().getCanvas().getHeight()/4 + 200),105, 56, ActionManager.CHANGE_STATE, new int[]{StateManager.ORIGINALGAME}, "", "S_boton3.png", "boton3.png"));
+        Canvas canvas = DisplayManager.getInstance().getCanvas();
+        buttons.add(new StyledButton((canvas.getWidth()/2),(canvas.getHeight()/2 - 100),105, 56, ActionManager.CHANGE_STATE, new int[]{StateManager.ORIGINALGAME}, "", "S_boton1.png", "boton1.png"));
+        buttons.add(new StyledButton((canvas.getWidth()/2),(canvas.getHeight()/2 ),105, 56, ActionManager.CHANGE_STATE, new int[]{StateManager.ORIGINALGAME}, "","S_boton2.png","boton2.png"));
+        buttons.add(new StyledButton((canvas.getWidth()/2),(canvas.getHeight()/2 + 100),105, 56, ActionManager.CHANGE_STATE, new int[]{StateManager.ORIGINALGAME}, "", "S_boton3.png", "boton3.png"));
 
         this.entities.addAll(buttons);
         currentButton = 0;

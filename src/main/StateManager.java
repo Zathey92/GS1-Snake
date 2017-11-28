@@ -58,6 +58,7 @@ public class StateManager {
         }else{
             logger.log(Level.SEVERE,"No se ha encontrado ningún estado con la id ("+state+")");
         }
+        states.get(currentState).enter = true;
     }
 
     public static StateManager getInstance() {

@@ -25,6 +25,7 @@ public class StyledButton extends Button {
 
     @Override
     public void init() {
+        super.init();
         selected = false;
         this.imageNotSelected = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/menu/" + stringNotSelected));
         this.imageSelected = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/menu/" + stringSelected));

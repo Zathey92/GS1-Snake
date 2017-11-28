@@ -8,6 +8,8 @@ import java.util.List;
 public class InputManager implements KeyListener {
     private static InputManager instance = null;
     public List<Key> keys = new ArrayList<>();
+    private boolean anyKey = false;
+    public String inputText = "";
 
     public void clearKeyMappings(){
         for(Key key: keys){
@@ -15,6 +17,14 @@ public class InputManager implements KeyListener {
             key.pressed = false;
             key.fired = false;
         }
+    }
+
+    public boolean anyKey(){
+        return anyKey;
+    }
+
+    public void clearBuffer(){
+        inputText = "";
     }
 
     public void addMapping(String s, int keyCode, int limit){
@@ -64,15 +74,21 @@ public class InputManager implements KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
+        anyKey = true;
         for(Key key: keys){
             if(e.getKeyCode()==key.keyCode){
                 key.toggle(true);
+
             }
         }
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
+        anyKey = false;
+        if(inputText.length() < 10){
+            inputText += e.getKeyChar();
+        }
         for(Key key: keys){
             if(e.getKeyCode()==key.keyCode){
                 key.toggle(false);

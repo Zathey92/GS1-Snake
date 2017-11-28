@@ -1,11 +1,18 @@
 package states;
 
 import entities.*;
+import entities.Button;
 import main.*;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.logging.Level;
 
 public class OriginalGameState extends State {
@@ -13,24 +20,38 @@ public class OriginalGameState extends State {
     private Food food;
     private Snake snake;
     private Score score;
+    private Input inputMessage;
     private static final int cellNumber = 20 ;
     Canvas canvas;
     private SoundManager soundManager;
     private int state;
+    private Message winMessage,loseMessage,nameMessage;
+
+
 
     public OriginalGameState(){
         canvas = DisplayManager.getInstance().getCanvas();
         cellWidth = (canvas.getWidth()-200)/cellNumber;
+        int middle = (int)((cellNumber/2)*cellWidth);
         if((cellWidth % 1) != 0) {
             logger.severe("BOP");
         }
-        snake = new Snake((int)(200+(cellNumber/2)*cellWidth), (int) ((cellNumber/2)*cellWidth),(int)cellWidth);
-        addEntity(snake);
+        snake = new Snake(middle+200, middle,(int)cellWidth);
         Point location = generatePosition();
         food = new Food(location.x,location.y,(int)cellWidth);
+        score = new Score(100,canvas.getHeight()/2, 150,20, ALIGN.CENTER);
+        winMessage = new Message(middle+200,middle,200,110,"Has ganado!", false);
+        loseMessage = new Message(middle+200,middle,200,110 ,"Has perdido...", false);
+        nameMessage = new Message(middle+100,middle+8,85,25 ,"Nombre:", false , new Color (200,200,200), Color.BLACK, ALIGN.LEFT, ALIGN.LEFT);
+        inputMessage = new Input(middle+225,middle+20, 115,25);
+        addEntity(snake);
         addEntity(food);
-        score = new Score(25,canvas.getHeight()/2);
         addEntity(score);
+        addEntity(winMessage);
+        addEntity(loseMessage);
+        addEntity(nameMessage);
+        addEntity(inputMessage);
+
     }
 
     @Override
@@ -46,6 +67,7 @@ public class OriginalGameState extends State {
         soundManager = SoundManager.getInstance();
         soundManager.add("eat","eat1.wav");
         soundManager.add("lose","lose.wav");
+        state = 0;
     }
 
     @Override
@@ -56,14 +78,48 @@ public class OriginalGameState extends State {
 
     @Override
     public void update(){
-
         if(input.isFired("ESCAPE")){
-            StateManager.getInstance().setState(StateManager.GAME_MENU);
+            StateManager.getInstance().lastState = StateManager.GAME_MENU;
+        }
+        switch (state){
+            case 0:
+                play();
+                break;
+            case 1:
+                showMessage(loseMessage);
+                break;
+            case 2:
+                showMessage(winMessage);
+                break;
+            default:
+                logger.warning("El estado " + state + "no existe");
         }
         super.update();
+
+    }
+
+    private void showMessage(Message message){
+        nameMessage.isVisible = true;
+        message.isVisible = true;
+        inputMessage.isVisible = true;
+        if(input.anyKey()){
+            message.isVisible = true;
+            inputMessage.isVisible = true;
+            nameMessage.isVisible = true;
+            //init();
+            //state = 0;
+        }
+    }
+
+    private void play(){
         int snakeX = snake.getHeadPosition().x;
         int snakeY = snake.getHeadPosition().y;
-        snakeCollision(snakeX, snakeY);
+        if(snake.collision){
+            input.clearBuffer();
+            soundManager.play("lose");
+            FileManager.getInstance().saveScore(String.valueOf(score.value));
+            state = 1;
+        }
         snakeFoodCollision(snakeX,snakeY);
     }
 
@@ -95,19 +151,15 @@ public class OriginalGameState extends State {
             if(snake.freq > 0){
                 snake.freq -= 5;
             }else{
-                logger.fine("WINNER");
+                input.clearBuffer();
+                soundManager.play("win");
+                FileManager.getInstance().saveScore(String.valueOf(score.value));
+                state = 2;
             }
             ActionManager.getInstance().action(3,null);
-            score.setHasCollide(true);
+            score.refreshScore();
             food.setHasCollide(location);
         }
-    }
-
-    private void snakeCollision(int snakeX, int snakeY) {
-        if(snakeX >= (canvas.getWidth()) || snakeX < 200 || snakeY >= (canvas.getHeight()) || snakeY < 0) {
-            gameOver();
-        }
-        if(snake.checkSelfCollision())gameOver();
     }
 
     public static Point generatePosition(){
@@ -115,13 +167,4 @@ public class OriginalGameState extends State {
         int yaux = ((int) (Math.random() * cellNumber));
         return new Point(xaux*(int)cellWidth+200,yaux*(int)cellWidth);
     }
-
-    private void gameOver() {
-        soundManager.play("lose");
-        JOptionPane.showMessageDialog(DisplayManager.getInstance(), "YOU LOSE");
-        score.saveScore();
-        init();
-        StateManager.getInstance().setState(StateManager.GAME_MENU);
-    }
-
 }

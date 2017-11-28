@@ -15,6 +15,7 @@ public abstract class State {
     protected List<Entity> entities= new ArrayList<Entity>();
     protected Logger logger;
     protected InputManager input;
+    public boolean enter;
 
     public void addEntity(Entity e){
         this.entities.add(e);
@@ -39,6 +40,7 @@ public abstract class State {
         }
     }
     public void init(){
+        enter = false;
         logger = java.util.logging.Logger.getLogger(getClass().getName());
         input = InputManager.getInstance();
         for(Entity entity: entities){

@@ -8,7 +8,7 @@ import java.util.logging.Logger;
 public class Application implements Runnable {
     private Thread thread;
     public static Boolean isRunning;
-    public final static double amountOfTicks = 60.0; //Numero de updates por segundo
+    public final static double amountOfTicks = 120.0; //Numero de updates por segundo
 
     private Logger logger;
     private Canvas canvas;
@@ -17,12 +17,15 @@ public class Application implements Runnable {
 
 
 
+
     public Application(){
         //Iniciamos las clases Manager
         logger = Logger.getLogger(getClass().getName());
         stateManager = StateManager.getInstance();
-        canvas = DisplayManager.getInstance().getCanvas();
+        DisplayManager frame = DisplayManager.getInstance();
+        canvas = frame.getCanvas();
         canvas.addKeyListener(InputManager.getInstance());
+        frame.addKeyListener(InputManager.getInstance());
         soundManager = SoundManager.getInstance();
     }
 

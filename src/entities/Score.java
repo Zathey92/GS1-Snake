@@ -1,5 +1,7 @@
 package entities;
 
+import main.ALIGN;
+
 import java.awt.*;
 
 import java.io.BufferedWriter;
@@ -11,50 +13,38 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 
-public class Score extends Entity {
-    private int value;
-    private final String PATH = "LeaderBoard.txt";
-    private final String TEXT = "Puntuación: ";
-    private Button button;
-    private Boolean eat;
+public class Score extends Message {
+    public int value;
 
-    public Score(int x, int y){
-        super(0,0);
-        button = new Button(x,y,150,20,10,TEXT + value);
+    public Score(int x, int y, int width, int height){
+        super(x,y,width,height, "Score: 0");
+    }
+
+    public Score(int x, int y, int width, int height, ALIGN align){
+        super(x,y,width,height, "Score: 0", align);
     }
 
     @Override
     public void init() {
         value = 0;
-        eat = false;
-        button.init();
+        setText("Score: " + value);
+        super.init();
     }
 
     @Override
     public void render(Graphics g) {
-        button.render(g);
+        super.render(g);
     }
 
     @Override
     public void update() {
-        if(eat){
-            value++;
-            button.setText(TEXT + value);
-            eat = false;
-        }
+        super.update();
+
     }
 
-    public void saveScore(){
-        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        Date date = new Date();
-        try (Writer writer = new BufferedWriter(new FileWriter(PATH, true))) {
-            System.out.println("escribiendo");
-            writer.append(System.getProperty("line.separator") + "default" + "\t" + value + "\t" + dateFormat.format(date));
-            writer.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
-    public void setHasCollide(boolean b) {eat = b; }
+    public void refreshScore(){
+        value++;
+        setText("Score: " + value);
+    }
 }
