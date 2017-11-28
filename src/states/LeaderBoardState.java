@@ -17,7 +17,8 @@ public class LeaderBoardState extends State {
 
     public LeaderBoardState(){
         fileManager = FileManager.getInstance();
-        infoMessage1 = new Message( DisplayManager.getInstance().getCanvas().getWidth() - 100, DisplayManager.getInstance().getCanvas().getHeight() - 50,150,25,"ESC: Volver al menu");
+        infoMessage1 = new Message( DisplayManager.getInstance().getCanvas().getWidth() - 100,
+                DisplayManager.getInstance().getCanvas().getHeight() - 50,150,25,"ESC: Volver al menu");
     }
 
     @Override

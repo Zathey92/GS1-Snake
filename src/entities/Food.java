@@ -1,9 +1,5 @@
 package entities;
 
-import com.sun.management.VMOption;
-import main.DisplayManager;
-import states.OriginalGameState;
-
 import java.awt.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;

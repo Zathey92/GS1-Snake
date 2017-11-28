@@ -1,7 +1,6 @@
 package states;
 
 import entities.*;
-import entities.Button;
 import main.*;
 
 import java.awt.*;

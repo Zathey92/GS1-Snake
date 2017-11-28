@@ -1,8 +1,6 @@
 package entities;
 
 import main.ActionManager;
-import main.DisplayManager;
-
 import java.awt.*;
 
 public class Button extends Message {
@@ -11,19 +9,19 @@ public class Button extends Message {
     protected boolean selected;
 
 
-    public Button(int x, int y, int width, int heigth, int action, int[] param, String text, Font font) {
-        super(x, y, width, heigth, text);
+    public Button(int x, int y, int width, int height, int action, int[] param, String text, Font font) {
+        super(x, y, width, height, text);
         this.action = action;
         this.param = param;
     }
-    public Button(int x, int y, int width, int heigth, int action, int[] param, String text) {
-        super(x, y, width, heigth, text);
+    public Button(int x, int y, int width, int height, int action, int[] param, String text) {
+        super(x, y, width, height, text);
         this.action = action;
         this.param = param;
     }
 
-    public Button(int x, int y, int width, int heigth, int action, String text) {
-        super(x, y, width, heigth, text);
+    public Button(int x, int y, int width, int height, int action, String text) {
+        super(x, y, width, height, text);
         this.action = action;
         this.param = new int[]{};
     }

@@ -8,7 +8,7 @@ import java.awt.*;
 
 
 public class Message extends Entity{
-    protected int width, heigth;
+    protected int width, height;
     protected int textHeight,textWidth;
     protected int acent , decent;
     public String text;
@@ -19,13 +19,13 @@ public class Message extends Entity{
     private ALIGN align;
     protected ALIGN textAling;
 
-    public Message(int x, int y, int width, int heigth, String text) {
+    public Message(int x, int y, int width, int height, String text) {
         super(x,y);
         rectColor = new Color(200,200,200);
         textColor = Color.black;
         align = ALIGN.CENTER;
         this.width = width;
-        this.heigth = heigth;
+        this.height = height;
         this.text = text;
         this.font = new Font("TimesRoman", Font.PLAIN, 12);
         this.isVisible = true;
@@ -34,13 +34,13 @@ public class Message extends Entity{
         setLayout();
     }
 
-    public Message(int x, int y, int width, int heigth, String text, ALIGN align) {
+    public Message(int x, int y, int width, int height, String text, ALIGN align) {
         super(x,y);
         rectColor = new Color(200,200,200);
         textColor = Color.black;
         this.align = align;
         this.width = width;
-        this.heigth = heigth;
+        this.height = height;
         this.text = text;
         this.font = new Font("TimesRoman", Font.PLAIN, 12);
         this.isVisible = true;
@@ -49,13 +49,13 @@ public class Message extends Entity{
         setLayout();
     }
 
-    public Message(int x, int y, int width, int heigth, String text, Boolean isVisible) {
+    public Message(int x, int y, int width, int height, String text, Boolean isVisible) {
         super(x,y);
         rectColor = new Color(200,200,200);
         textColor = Color.black;
         align = ALIGN.CENTER;
         this.width = width;
-        this.heigth = heigth;
+        this.height = height;
         this.text = text;
         this.font = new Font("TimesRoman", Font.PLAIN, 24);
         this.isVisible = isVisible;
@@ -66,13 +66,13 @@ public class Message extends Entity{
 
 
 
-    public Message(int x, int y, int width, int heigth, String text, Boolean isVisible, Color rectColor, Color textColor) {
+    public Message(int x, int y, int width, int height, String text, Boolean isVisible, Color rectColor, Color textColor) {
         super(x,y);
         this.rectColor = rectColor;
         this.textColor = textColor;
         align = ALIGN.CENTER;
         this.width = width;
-        this.heigth = heigth;
+        this.height = height;
         this.text = text;
         this.font = new Font("TimesRoman", Font.PLAIN, 12);
         this.isVisible = isVisible;
@@ -82,13 +82,13 @@ public class Message extends Entity{
 
     }
 
-    public Message(int x, int y, int width, int heigth, String text, Boolean isVisible, Color rectColor, Color textColor, ALIGN align) {
+    public Message(int x, int y, int width, int height, String text, Boolean isVisible, Color rectColor, Color textColor, ALIGN align) {
         super(x, y);
         this.align = align;
         this.rectColor = rectColor;
         this.textColor = textColor;
         this.width = width;
-        this.heigth = heigth;
+        this.height = height;
         this.text = text;
         this.font = new Font("TimesRoman", Font.PLAIN, 12);
         this.isVisible = isVisible;
@@ -97,13 +97,13 @@ public class Message extends Entity{
         setLayout();
     }
 
-    public Message(int x, int y, int width, int heigth, String text, Boolean isVisible, Color rectColor, Color textColor, ALIGN align, ALIGN textAling) {
+    public Message(int x, int y, int width, int height, String text, Boolean isVisible, Color rectColor, Color textColor, ALIGN align, ALIGN textAling) {
         super(x, y);
         this.align = align;
         this.rectColor = rectColor;
         this.textColor = textColor;
         this.width = width;
-        this.heigth = heigth;
+        this.height = height;
         this.text = text;
         this.font = new Font("TimesRoman", Font.PLAIN, 12);
         this.isVisible = isVisible;
@@ -131,7 +131,7 @@ public class Message extends Entity{
                 this.x -= width/2;
             case CENTER:
                 this.x -= width/2;
-                this.y -= heigth/2;
+                this.y -= height /2;
                 break;
             case RIGHT:
                 this.x += width - textWidth;
@@ -144,18 +144,18 @@ public class Message extends Entity{
     public void render(Graphics g) {
         if(!isVisible) return;
         g.setColor(rectColor);
-        g.fillRect(x,y,width,heigth);
+        g.fillRect(x,y,width, height);
         g.setColor(textColor);
         g.setFont(font);
         switch (textAling){
             case LEFT:
-                g.drawString(text,x+10,y+(heigth-textHeight)/2 + acent);
+                g.drawString(text,x+10,y+(height -textHeight)/2 + acent);
                 break;
             case TOP:
                 g.drawString(text,x+(width-textWidth)/2,y + textHeight);
                 break;
             default:
-                g.drawString(text,x+(width-textWidth)/2,y+(heigth-textHeight)/2 + acent);
+                g.drawString(text,x+(width-textWidth)/2,y+(height -textHeight)/2 + acent);
                 break;
         }
 

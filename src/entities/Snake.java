@@ -161,7 +161,6 @@ public class Snake extends Entity {
 
     public boolean snakeCollision(Point newP) {
         Canvas canvas = DisplayManager.getInstance().getCanvas();
-        Point snakeHead = getHeadPosition();
         if(newP.x >= (canvas.getWidth()) || newP.x < 200 || newP.y >= (canvas.getHeight()) || newP.y < 0) {
             return true;
         }

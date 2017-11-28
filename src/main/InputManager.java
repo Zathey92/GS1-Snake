@@ -1,6 +1,5 @@
 package main;
 
-import javax.xml.crypto.dsig.keyinfo.KeyValue;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
@@ -9,7 +8,6 @@ import java.util.List;
 public class InputManager implements KeyListener {
     private static InputManager instance = null;
     public List<Key> keys = new ArrayList<>();
-    private boolean anyKey = false;
     public String inputText = "";
 
     public void clearKeyMappings(){
@@ -18,10 +16,6 @@ public class InputManager implements KeyListener {
             key.pressed = false;
             key.fired = false;
         }
-    }
-
-    public boolean anyKey(){
-        return anyKey;
     }
 
     public void clearBuffer(){
@@ -75,7 +69,6 @@ public class InputManager implements KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        anyKey = true;
         for(Key key: keys){
             if(e.getKeyCode()==key.keyCode){
                 key.toggle(true);
@@ -86,7 +79,6 @@ public class InputManager implements KeyListener {
 
     @Override
     public void keyReleased(KeyEvent e) {
-        anyKey = false;
         if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE && !inputText.isEmpty()){
             inputText = inputText.substring(0,inputText.length()-1);
         }

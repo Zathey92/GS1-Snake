@@ -17,12 +17,8 @@ public class LeaderBoard extends Entity{
     }
 
     @Override
-    public void update() {
+    public void update() { }
 
-    }
-    public void init(){
-
-    }
     void drawString(Graphics g, ArrayList<String[]> text, int x, int y) {
         for(String[] line : text){
             int tempY = y += g.getFontMetrics().getHeight();

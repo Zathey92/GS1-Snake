@@ -1,7 +1,5 @@
 package main;
 
-import entities.LeaderBoard;
-
 import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -19,7 +17,6 @@ public class FileManager {
     private Logger logger;
     public static FileManager instance = null;
     private String FILEPATH="LeaderBoard.txt";
-    private LeaderBoard leaderBoardEntity;
     private File file;
     private Charset charset;
 
@@ -46,7 +43,7 @@ public class FileManager {
                         parts[2]));
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.warning("No se pudo leer el archivo");
         }
         return result;
     }
@@ -66,7 +63,7 @@ public class FileManager {
         try (OutputStream out = new BufferedOutputStream(Files.newOutputStream(file.toPath(), CREATE, APPEND))) {
             out.write(data, 0, data.length);
         } catch (IOException x) {
-            System.err.println(x);
+            logger.warning("No se puede guardar la puntuación");
         }
     }
 }
