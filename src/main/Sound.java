@@ -40,7 +40,6 @@ public class Sound implements Runnable {
 
     @Override
     public void run() {
-        System.out.println(" soy un sonido " + Thread.activeCount());
         if(loopFlag){
             sound.loop();
         }else {

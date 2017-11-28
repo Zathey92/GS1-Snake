@@ -82,4 +82,6 @@ public class Button extends Entity {
         ActionManager.getInstance().action(action, param);
     }
 
+    public void setText(String text){ this.text = text;}
+
 }

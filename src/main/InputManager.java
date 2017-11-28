@@ -9,6 +9,13 @@ public class InputManager implements KeyListener {
     private static InputManager instance = null;
     public List<Key> keys = new ArrayList<>();
 
+    public void clearKeyMappings(){
+        for(Key key: keys){
+            key.pressCount = 0;
+            key.pressed = false;
+            key.fired = false;
+        }
+    }
 
     public void addMapping(String s, int keyCode, int limit){
         for(Key key: keys){
@@ -27,8 +34,6 @@ public class InputManager implements KeyListener {
         }
         keys.add(new Key(s,keyCode));
     }
-
-    //public void clearMapping(){ keys = new ArrayList<>(); }
 
     public boolean isPressed(String s){
         for(Key key: keys){

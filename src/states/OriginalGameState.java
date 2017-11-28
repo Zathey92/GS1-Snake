@@ -1,62 +1,53 @@
 package states;
 
-import entities.Food;
-import entities.Score;
-import entities.Snake;
-import main.DisplayManager;
-import main.InputManager;
-import main.SoundManager;
-import main.StateManager;
+import entities.*;
+import main.*;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class OriginalGameState extends State {
-    private int FREQUENCY;
     private static double cellWidth = 0.0;
     private Food food;
     private Snake snake;
     private Score score;
-    private Logger logger;
     private static final int cellNumber = 20 ;
     Canvas canvas;
     private SoundManager soundManager;
+    private int state;
 
     public OriginalGameState(){
-
-        logger = Logger.getLogger(getClass().getName());
         canvas = DisplayManager.getInstance().getCanvas();
         cellWidth = (canvas.getWidth()-200)/cellNumber;
-        if((cellWidth % 1) != 0){
+        if((cellWidth % 1) != 0) {
             logger.severe("BOP");
         }
-        score = new Score();
-        addEntity(score);
-        logger = Logger.getLogger(getClass().getName());
         snake = new Snake((int)(200+(cellNumber/2)*cellWidth), (int) ((cellNumber/2)*cellWidth),(int)cellWidth);
         addEntity(snake);
         Point location = generatePosition();
         food = new Food(location.x,location.y,(int)cellWidth);
         addEntity(food);
+        score = new Score(25,canvas.getHeight()/2);
+        addEntity(score);
     }
 
     @Override
     public void init() {
+        super.init();
         canvas.setBackground(new Color(50,50,50));
         logger.log(Level.INFO," Iniciando Mappeo");
-        InputManager input = InputManager.getInstance();
         input.addMapping("UP", KeyEvent.VK_UP);
         input.addMapping("DOWN", KeyEvent.VK_DOWN);
         input.addMapping("RIGHT", KeyEvent.VK_RIGHT);
         input.addMapping("LEFT", KeyEvent.VK_LEFT);
+        input.addMapping("ESCAPE", KeyEvent.VK_ESCAPE, 1);
         soundManager = SoundManager.getInstance();
-        soundManager.add("menuSelect","cartoon135.wav");
-
-        super.init();
+        soundManager.add("eat","eat1.wav");
+        soundManager.add("lose","lose.wav");
     }
+
     @Override
     public void render(Graphics g){
         drawGrid(g);
@@ -65,12 +56,15 @@ public class OriginalGameState extends State {
 
     @Override
     public void update(){
+
+        if(input.isFired("ESCAPE")){
+            StateManager.getInstance().setState(StateManager.GAME_MENU);
+        }
         super.update();
         int snakeX = snake.getHeadPosition().x;
         int snakeY = snake.getHeadPosition().y;
         snakeCollision(snakeX, snakeY);
         snakeFoodCollision(snakeX,snakeY);
-
     }
 
     private void drawGrid(Graphics g) {
@@ -90,24 +84,27 @@ public class OriginalGameState extends State {
         g.fillRect(196,0,4,canvas.getHeight());
     }
 
-
     private void snakeFoodCollision(int x, int y) {
         if(x == food.x && y == food.y){
-            soundManager.start("menuSelect");
-
+            soundManager.play("eat");
             snake.setGrow(true);
             Point location = generatePosition();
             while(snake.hasSnake(location.x,location.y)){
                 location = generatePosition();
             }
-            food.setHasCollide(location);
+            if(snake.freq > 0){
+                snake.freq -= 5;
+            }else{
+                logger.fine("WINNER");
+            }
+            ActionManager.getInstance().action(3,null);
             score.setHasCollide(true);
+            food.setHasCollide(location);
         }
     }
 
     private void snakeCollision(int snakeX, int snakeY) {
         if(snakeX >= (canvas.getWidth()) || snakeX < 200 || snakeY >= (canvas.getHeight()) || snakeY < 0) {
-            soundManager.stop("menuSelect");
             gameOver();
         }
         if(snake.checkSelfCollision())gameOver();
@@ -120,7 +117,9 @@ public class OriginalGameState extends State {
     }
 
     private void gameOver() {
+        soundManager.play("lose");
         JOptionPane.showMessageDialog(DisplayManager.getInstance(), "YOU LOSE");
+        score.saveScore();
         init();
         StateManager.getInstance().setState(StateManager.GAME_MENU);
     }

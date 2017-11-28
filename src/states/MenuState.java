@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import entities.Button;
 import main.DisplayManager;
@@ -11,22 +12,23 @@ import main.InputManager;
 import main.SoundManager;
 
 public abstract class MenuState extends State {
+
     int currentButton;
     protected List<Button> buttons = new ArrayList<>();
     protected int KEYFRECUENCY = 1;
-    protected InputManager input;
+
     protected SoundManager soundManager;
 
     @Override
     public void init() {
         DisplayManager.getInstance().getCanvas().setBackground(new Color(50,50,50));
-        input = InputManager.getInstance();
+        super.init();
         input.addMapping("ENTER", KeyEvent.VK_ENTER, KEYFRECUENCY);
         input.addMapping("UP", KeyEvent.VK_UP, KEYFRECUENCY);
         input.addMapping("DOWN", KeyEvent.VK_DOWN, KEYFRECUENCY);
         soundManager = SoundManager.getInstance();
-        soundManager.add("menuSelect","cartoon135.wav");
-        super.init();
+        soundManager.add("menuSelect","select.wav");
+        this.buttons.get(currentButton).setSelected(true);
 
     }
 

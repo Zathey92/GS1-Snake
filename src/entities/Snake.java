@@ -1,8 +1,6 @@
 package entities;
 
-import main.Application;
-import main.DisplayManager;
-import main.InputManager;
+import main.*;
 
 import java.awt.*;
 import java.util.LinkedList;
@@ -17,7 +15,7 @@ public class Snake extends Entity {
     private String direction;
     private Boolean isGrowing;
 
-    private double freq;
+    public double freq;
 
     private LinkedList<Point> queue;
     private double updateCounter;

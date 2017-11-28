@@ -32,10 +32,9 @@ public class Key {
 
         pressCount++;
         if(pressed) {
-            if (pressCount > limit){
+            if (pressCount >= limit){
                 pressCount = 0;
                 fired = true;
-                System.out.println(fired);
             }
         }
     }

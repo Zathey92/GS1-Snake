@@ -35,6 +35,7 @@ public class Application implements Runnable {
         int updates = 0;
         int frames =0;
         long timer =System.currentTimeMillis();
+        stateManager.init();
         while(isRunning){
             long now = System.nanoTime();
             delta += (double)(now-lastTime) / (long)ns; //diferencia de tiempo en cada loop
