@@ -29,7 +29,6 @@ public class Snake extends Entity {
 
     @Override
     public void init(){
-
         freq =  Application.amountOfTicks*2;
         updateCounter = 0;
         collision = false;
@@ -162,6 +161,7 @@ public class Snake extends Entity {
     public boolean snakeCollision(Point newP) {
         Canvas canvas = DisplayManager.getInstance().getCanvas();
         if(newP.x >= (canvas.getWidth()) || newP.x < 200 || newP.y >= (canvas.getHeight()) || newP.y < 0) {
+            isMoving = false;
             return true;
         }
         return checkSelfCollision();
