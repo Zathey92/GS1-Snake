@@ -28,7 +28,7 @@ public class OriginalGameState extends State {
         if((cellWidth % 1) != 0) {
             logger.severe("BOP");
         }
-        snake = new Snake(middle+200, middle,(int)cellWidth);
+        snake = new Snake(middle+200, middle,(int)cellWidth,0);
         Point location = generatePosition();
         food = new Food(location.x,location.y,(int)cellWidth);
         score = new Score(100,canvas.getHeight()/2, 150,20, ALIGN.CENTER);

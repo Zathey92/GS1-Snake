@@ -14,6 +14,7 @@ public class Snake extends Entity {
     private InputManager input;
     private String direction;
     private Boolean isGrowing;
+    public final int player;
 
     public double freq;
 
@@ -21,10 +22,11 @@ public class Snake extends Entity {
     private double updateCounter;
     public boolean collision;
 
-    public Snake(int x, int y,int cellWidth) {
+    public Snake(int x, int y,int cellWidth, int player) {
         super(x, y);
         logger = Logger.getLogger(getClass().getName());
         this.cellWidth=cellWidth;
+        this.player = player;
     }
 
     @Override
@@ -35,10 +37,20 @@ public class Snake extends Entity {
         isGrowing = false;
         queue = new LinkedList<>();
         queue.addFirst(new Point(x,y));
-        queue.addLast(new Point(x-cellWidth,y));
-        queue.addLast(new Point(x-2*cellWidth,y));
-        direction ="RIGHT";
-        color = Color.RED;
+        switch (player){
+            case 0:
+                queue.addLast(new Point(x-cellWidth,y));
+                queue.addLast(new Point(x-2*cellWidth,y));
+                color = Color.RED;
+                direction = "RIGHT";
+                break;
+            case 1:
+                queue.addLast(new Point(x+cellWidth,y));
+                queue.addLast(new Point(x+2*cellWidth,y));
+                color = Color.BLUE;
+                direction = "LEFT";
+                break;
+        }
         input = InputManager.getInstance();
         isMoving = true;
     }
@@ -106,16 +118,16 @@ public class Snake extends Entity {
 
 
     private void getInput() {
-        if(input.isPressed("LEFT") && !direction.equals("RIGHT")){
+        if(input.isPressed("LEFT"+player) && !direction.equals("RIGHT")){
             setDirection("LEFT");
         }
-        if(input.isPressed("RIGHT") && !direction.equals("LEFT")){
+        if(input.isPressed("RIGHT"+player) && !direction.equals("LEFT")){
             setDirection("RIGHT");
         }
-        if(input.isPressed("UP") && !direction.equals("DOWN")){
+        if(input.isPressed("UP"+player) && !direction.equals("DOWN")){
             setDirection("UP");
         }
-        if(input.isPressed("DOWN") && !direction.equals("UP")){
+        if(input.isPressed("DOWN"+player) && !direction.equals("UP")){
             setDirection("DOWN");
         }
     }
@@ -124,9 +136,6 @@ public class Snake extends Entity {
         direction = st;
     }
 
-    public void resetSnake() {
-        init();
-    }
 
     public Point getHeadPosition(){
         return new Point(queue.getFirst());
@@ -161,9 +170,13 @@ public class Snake extends Entity {
     public boolean snakeCollision(Point newP) {
         Canvas canvas = DisplayManager.getInstance().getCanvas();
         if(newP.x >= (canvas.getWidth()) || newP.x < 200 || newP.y >= (canvas.getHeight()) || newP.y < 0) {
-            isMoving = false;
+            collision = true;
             return true;
         }
         return checkSelfCollision();
+    }
+
+    public void collided(Snake snake2) {
+        if(snake2.hasSnake(getHeadPosition().x,getHeadPosition().y)) collision = true;
     }
 }

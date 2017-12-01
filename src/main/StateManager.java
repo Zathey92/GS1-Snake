@@ -14,6 +14,7 @@ public class StateManager {
     public static final int ORIGINALGAME = 1;
     public static final int LEADERBOARD = 2;
     public static final int SELECTGAME= 3;
+    public static final int MULTIPLAYERGAME= 4;
 
     public static int lastState;
     private static StateManager instance = null;
@@ -31,6 +32,7 @@ public class StateManager {
         states.add(new OriginalGameState());
         states.add(new LeaderBoardState());
         states.add(new SelectGameState());
+        states.add(new MultiplayerGameState());
     }
     /* No Tocar */
     public void init() {
