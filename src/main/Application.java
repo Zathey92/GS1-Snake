@@ -7,7 +7,7 @@ import java.util.logging.Logger;
 
 public class Application implements Runnable {
     private Thread thread;
-    public static Boolean isRunning;
+    public static boolean isRunning;
     public final static double amountOfTicks = 120.0; //Numero de updates por segundo
 
     private Logger logger;

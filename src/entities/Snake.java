@@ -118,16 +118,17 @@ public class Snake extends Entity {
 
 
     private void getInput() {
-        if(input.isPressed("LEFT"+player) && !direction.equals("RIGHT")){
+        if(collision)return;
+        if(input.isPressed("LEFT") && !direction.equals("RIGHT")){
             setDirection("LEFT");
         }
-        if(input.isPressed("RIGHT"+player) && !direction.equals("LEFT")){
+        if(input.isPressed("RIGHT") && !direction.equals("LEFT")){
             setDirection("RIGHT");
         }
-        if(input.isPressed("UP"+player) && !direction.equals("DOWN")){
+        if(input.isPressed("UP") && !direction.equals("DOWN")){
             setDirection("UP");
         }
-        if(input.isPressed("DOWN"+player) && !direction.equals("UP")){
+        if(input.isPressed("DOWN") && !direction.equals("UP")){
             setDirection("DOWN");
         }
     }
