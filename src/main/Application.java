@@ -8,27 +8,37 @@ import java.util.logging.Logger;
 public class Application implements Runnable {
     private Thread thread;
     public static Boolean isRunning;
+    public final static double amountOfTicks = 120.0; //Numero de updates por segundo
+
     private Logger logger;
     private Canvas canvas;
     private StateManager stateManager;
+    private SoundManager soundManager;
+
+
+
 
     public Application(){
         //Iniciamos las clases Manager
         logger = Logger.getLogger(getClass().getName());
         stateManager = StateManager.getInstance();
-        canvas = DisplayManager.getInstance().getCanvas();
+        DisplayManager frame = DisplayManager.getInstance();
+        canvas = frame.getCanvas();
         canvas.addKeyListener(InputManager.getInstance());
-
+        frame.addKeyListener(InputManager.getInstance());
+        soundManager = SoundManager.getInstance();
     }
+
     public void run() {
         logger.log(Level.INFO," Aplication Running");
         long lastTime = System.nanoTime();
-        final double amountOfTicks = 60.0; //Numero de updates por segundo
+
         double ns = 100000000 / amountOfTicks;
         double delta = 0;
         int updates = 0;
         int frames =0;
         long timer =System.currentTimeMillis();
+        stateManager.init();
         while(isRunning){
             long now = System.nanoTime();
             delta += (double)(now-lastTime) / (long)ns; //diferencia de tiempo en cada loop
@@ -56,6 +66,7 @@ public class Application implements Runnable {
         isRunning=true;
         thread.start();
     }
+
     public void stop(){
         try {
             thread.join();
