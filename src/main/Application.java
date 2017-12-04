@@ -48,9 +48,11 @@ public class Application implements Runnable {
                 stateManager.update();
                 updates++;
                 delta--;
+                frames++;
+                render();
             }
-            render();
-            frames++;
+            //render();
+            //frames++;
             if(System.currentTimeMillis() - timer > 1000){
                 timer += 100;
                 logger.log(Level.FINE,updates + " Ticks, Fps " + frames);
