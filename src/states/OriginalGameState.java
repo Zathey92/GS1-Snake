@@ -170,10 +170,10 @@ public class OriginalGameState extends State {
 
     @Override
     public void initMapping(){
-        input.addMapping("UP", KeyEvent.VK_UP);
-        input.addMapping("DOWN", KeyEvent.VK_DOWN);
-        input.addMapping("RIGHT", KeyEvent.VK_RIGHT);
-        input.addMapping("LEFT", KeyEvent.VK_LEFT);
+        input.addMapping("UP0", KeyEvent.VK_UP);
+        input.addMapping("DOWN0", KeyEvent.VK_DOWN);
+        input.addMapping("RIGHT0", KeyEvent.VK_RIGHT);
+        input.addMapping("LEFT0", KeyEvent.VK_LEFT);
         input.addMapping("ENTER", KeyEvent.VK_ENTER);
         super.initMapping();
     }

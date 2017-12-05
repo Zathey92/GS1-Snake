@@ -119,16 +119,16 @@ public class Snake extends Entity {
 
     private void getInput() {
         if(collision)return;
-        if(input.isPressed("LEFT") && !direction.equals("RIGHT")){
+        if(input.isPressed("LEFT"+player) && !direction.equals("RIGHT")){
             setDirection("LEFT");
         }
-        if(input.isPressed("RIGHT") && !direction.equals("LEFT")){
+        if(input.isPressed("RIGHT"+player) && !direction.equals("LEFT")){
             setDirection("RIGHT");
         }
-        if(input.isPressed("UP") && !direction.equals("DOWN")){
+        if(input.isPressed("UP"+player) && !direction.equals("DOWN")){
             setDirection("UP");
         }
-        if(input.isPressed("DOWN") && !direction.equals("UP")){
+        if(input.isPressed("DOWN"+player) && !direction.equals("UP")){
             setDirection("DOWN");
         }
     }
@@ -171,7 +171,6 @@ public class Snake extends Entity {
     public boolean snakeCollision(Point newP) {
         Canvas canvas = DisplayManager.getInstance().getCanvas();
         if(newP.x >= (canvas.getWidth()) || newP.x < 200 || newP.y >= (canvas.getHeight()) || newP.y < 0) {
-            collision = true;
             return true;
         }
         return checkSelfCollision();

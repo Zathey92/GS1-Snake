@@ -33,7 +33,7 @@ public class Sound implements Runnable {
     }
 
     public static URL getURL(String fileName){
-        return staticSound.getClass().getResource("../sounds/"+fileName);
+        return staticSound.getClass().getResource("/sounds/"+fileName);
     }
 
 

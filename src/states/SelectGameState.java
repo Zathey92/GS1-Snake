@@ -18,7 +18,7 @@ public class SelectGameState extends MenuState {
         picture = new Picture(25,canvas.getHeight()/2,400,150 , "logo.png");
         buttons.add(new StyledButton((canvas.getWidth()/2)+150,(canvas.getHeight()/2 - 150),210, 104, ActionManager.CHANGE_STATE, new int[]{StateManager.ORIGINALGAME}, "", "S_boton1.png", "boton1.png"));
         buttons.add(new StyledButton((canvas.getWidth()/2)+150,(canvas.getHeight()/2 ),210, 104, ActionManager.CHANGE_STATE, new int[]{StateManager.MULTIPLAYERGAME}, "","S_boton2.png","boton2.png"));
-        buttons.add(new StyledButton((canvas.getWidth()/2)+150,(canvas.getHeight()/2 + 150),210, 104, ActionManager.CHANGE_STATE, new int[]{StateManager.ORIGINALGAME}, "", "S_boton3.png", "boton3.png"));
+        buttons.add(new StyledButton((canvas.getWidth()/2)+150,(canvas.getHeight()/2 + 150),210, 104, ActionManager.CHANGE_STATE, new int[]{StateManager.OLDMULTIPLAYERGAME}, "", "S_boton3.png", "boton3.png"));
         this.entities.add(picture);
         this.entities.addAll(buttons);
         currentButton = 0;

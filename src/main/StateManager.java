@@ -2,7 +2,6 @@ package main;
 
 import states.*;
 
-import javax.net.ssl.KeyManager;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +14,7 @@ public class StateManager {
     public static final int LEADERBOARD = 2;
     public static final int SELECTGAME= 3;
     public static final int MULTIPLAYERGAME= 4;
+    public static final int OLDMULTIPLAYERGAME= 5;
 
     public static int lastState;
     private static StateManager instance = null;
@@ -33,6 +33,7 @@ public class StateManager {
         states.add(new LeaderBoardState());
         states.add(new SelectGameState());
         states.add(new MultiplayerGameState());
+        states.add(new OldMultiplayerGameState());
     }
     /* No Tocar */
     public void init() {
