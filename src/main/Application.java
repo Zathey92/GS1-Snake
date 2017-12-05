@@ -9,7 +9,7 @@ public class Application implements Runnable {
     private Thread thread;
     public static boolean isRunning;
     public final static double amountOfTicks = 120.0; //Numero de updates por segundo
-
+    public static double delta;
     private Logger logger;
     private Canvas canvas;
     private StateManager stateManager;
@@ -34,7 +34,7 @@ public class Application implements Runnable {
         long lastTime = System.nanoTime();
 
         double ns = 100000000 / amountOfTicks;
-        double delta = 0;
+        delta = 0;
         int updates = 0;
         int frames =0;
         long timer =System.currentTimeMillis();

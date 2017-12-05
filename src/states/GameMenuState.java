@@ -23,12 +23,11 @@ public class GameMenuState extends MenuState {
         currentButton = 0;
         this.entities.add(picture);
         super.init();
-        input.addMapping("ESCAPE2", KeyEvent.VK_ESCAPE,1);
     }
 
     @Override
     public void update(){
-        if(input.isFired("ESCAPE2")){
+        if(input.isFired("ESCAPE")){
             if(StateManager.lastState != -1){
                 StateManager.getInstance().setState(StateManager.lastState);
             }else{

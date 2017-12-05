@@ -23,9 +23,6 @@ public abstract class MenuState extends State {
     public void init() {
         DisplayManager.getInstance().getCanvas().setBackground(new Color(50,50,50));
         super.init();
-        input.addMapping("ENTER", KeyEvent.VK_ENTER, KEYFRECUENCY);
-        input.addMapping("UP", KeyEvent.VK_UP, KEYFRECUENCY);
-        input.addMapping("DOWN", KeyEvent.VK_DOWN, KEYFRECUENCY);
         soundManager = SoundManager.getInstance();
         soundManager.add("menuSelect","select.wav");
         this.buttons.get(currentButton).setSelected(true);
@@ -34,10 +31,16 @@ public abstract class MenuState extends State {
 
     @Override
     public void update(){
+        if(enter){
+            initMapping();
+            enter=false;
+        }
+        checkEscape();
         if(input.isFired("ENTER")){
             this.buttons.get(currentButton).action();
         }
         if(input.isFired("UP")){
+            System.out.println("going up");
             this.buttons.get(currentButton).setSelected(false);
             soundManager.play("menuSelect");
             previousButton();
@@ -66,5 +69,13 @@ public abstract class MenuState extends State {
         }else{
             currentButton = 0;
         }
+    }
+
+    @Override
+    public void initMapping(){
+        input.addMapping("ENTER", KeyEvent.VK_ENTER, KEYFRECUENCY);
+        input.addMapping("UP", KeyEvent.VK_UP, KEYFRECUENCY);
+        input.addMapping("DOWN", KeyEvent.VK_DOWN, KEYFRECUENCY);
+        super.initMapping();
     }
 }

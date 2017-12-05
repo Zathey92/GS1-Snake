@@ -54,13 +54,7 @@ public class OriginalGameState extends State {
     public void init() {
         super.init();
         canvas.setBackground(new Color(50,50,50));
-        logger.log(Level.INFO," Iniciando Mappeo");
-        input.addMapping("UP", KeyEvent.VK_UP);
-        input.addMapping("DOWN", KeyEvent.VK_DOWN);
-        input.addMapping("RIGHT", KeyEvent.VK_RIGHT);
-        input.addMapping("LEFT", KeyEvent.VK_LEFT);
-        input.addMapping("ESCAPE", KeyEvent.VK_ESCAPE, 1);
-        input.addMapping("ENTER2", KeyEvent.VK_ENTER);
+        logger.log(Level.INFO," Iniciando OriginalGameState");
         soundManager = SoundManager.getInstance();
         soundManager.add("eat","eat1.wav");
         soundManager.add("lose","lose.wav");
@@ -76,8 +70,13 @@ public class OriginalGameState extends State {
 
     @Override
     public void update(){
+        if(enter){
+            initMapping();
+            enter=false;
+        }
         if(input.isFired("ESCAPE")){
             StateManager.getInstance().lastState = StateManager.GAME_MENU;
+            escape();
         }
         switch (state){
             case 0:
@@ -100,7 +99,7 @@ public class OriginalGameState extends State {
         nameMessage.isVisible = true;
         message.isVisible = true;
         inputMessage.isVisible = true;
-        if(input.isPressed("ENTER2" )){
+        if(input.isPressed("ENTER" )){
             message.isVisible = false;
             inputMessage.isVisible = false;
             nameMessage.isVisible = false;
@@ -167,5 +166,15 @@ public class OriginalGameState extends State {
         int xaux = ((int) (Math.random() * cellNumber));
         int yaux = ((int) (Math.random() * cellNumber));
         return new Point(xaux*(int)cellWidth+200,yaux*(int)cellWidth);
+    }
+
+    @Override
+    public void initMapping(){
+        input.addMapping("UP", KeyEvent.VK_UP);
+        input.addMapping("DOWN", KeyEvent.VK_DOWN);
+        input.addMapping("RIGHT", KeyEvent.VK_RIGHT);
+        input.addMapping("LEFT", KeyEvent.VK_LEFT);
+        input.addMapping("ENTER", KeyEvent.VK_ENTER);
+        super.initMapping();
     }
 }

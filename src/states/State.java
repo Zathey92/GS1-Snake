@@ -6,6 +6,7 @@ import main.InputManager;
 import main.StateManager;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -22,13 +23,7 @@ public abstract class State {
     }
 
     public void update(){
-        if(input.isFired("ESCAPE2")){
-            if(StateManager.lastState != -1){
-                StateManager.getInstance().setState(StateManager.lastState);
-            }else{
-                logger.warning("El estado a volver no existe");
-            }
-        }
+
         for(Entity entity: entities){
             entity.update();
         }
@@ -40,13 +35,27 @@ public abstract class State {
         }
     }
     public void init(){
-        enter = false;
+        enter = true;
         logger = java.util.logging.Logger.getLogger(getClass().getName());
         input = InputManager.getInstance();
         for(Entity entity: entities){
             entity.init();
         }
     }
+    public void initMapping() {
+        input.addMapping("ESCAPE", KeyEvent.VK_ESCAPE,1);
+    }
 
-
+    public void checkEscape(){
+        if(input.isFired("ESCAPE")){
+            escape();
+        }
+    }
+    public void escape(){
+        if(StateManager.lastState != -1){
+            StateManager.getInstance().setState(StateManager.lastState);
+        }else{
+            logger.warning("El estado a volver no existe");
+        }
+    }
 }

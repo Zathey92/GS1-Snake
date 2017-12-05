@@ -28,7 +28,7 @@ public class SelectGameState extends MenuState {
 
     @Override
     public void update() {
-        if(input.isFired("ESCAPE2")){
+        if(input.isFired("ESCAPE")){
             if(StateManager.lastState != -1){
                 StateManager.getInstance().setState(StateManager.lastState);
             }else{

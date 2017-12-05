@@ -25,15 +25,10 @@ public class LeaderBoardState extends State {
     public void update() {
         if(enter){
             this.init();
+            initMapping();
             enter = false;
         }
-        if(input.isFired("ESCAPE2")){
-            if(StateManager.lastState != -1){
-                StateManager.getInstance().setState(StateManager.lastState);
-            }else{
-                logger.warning("El estado a volver no existe");
-            }
-        }
+        checkEscape();
         super.update();
     }
 

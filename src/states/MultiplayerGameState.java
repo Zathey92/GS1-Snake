@@ -5,6 +5,7 @@ import main.*;
 
 import java.awt.*;
 
+import java.awt.event.KeyEvent;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -20,9 +21,8 @@ public class MultiplayerGameState extends State {
 
     @Override
     public void init() {
+        logger.log(Level.INFO," Iniciando Multijugador");
         super.init();
-        logger.log(Level.INFO," Iniciando Mappeo");
-
     }
 
     @Override
@@ -32,10 +32,22 @@ public class MultiplayerGameState extends State {
 
     @Override
     public void update(){
+        if(enter){
+            initMapping();
+            enter=false;
+        }
         if(input.isFired("ESCAPE")){
+            logger.log(Level.INFO," Saliendo al Menu");
             StateManager.getInstance().lastState = StateManager.GAME_MENU;
+            escape();
         }
         super.update();
+    }
+    @Override
+    public void initMapping() {
+        input.addMapping("LEFT", KeyEvent.VK_LEFT,1);
+        input.addMapping("RIGHT", KeyEvent.VK_RIGHT,1);
+        super.initMapping();
     }
 
 }

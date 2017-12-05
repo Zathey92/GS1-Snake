@@ -11,11 +11,8 @@ public class InputManager implements KeyListener {
     public String inputText = "";
 
     public void clearKeyMappings(){
-        for(Key key: keys){
-            key.pressCount = 0;
-            key.pressed = false;
-            key.fired = false;
-        }
+        keys = new ArrayList<>();
+        System.out.println("clear Mappings");
     }
 
     public void clearBuffer(){
@@ -23,21 +20,27 @@ public class InputManager implements KeyListener {
     }
 
     public void addMapping(String s, int keyCode, int limit){
-        for(Key key: keys){
-            if(s.equals(key.name)){
-               return;
+        for(int i = 0; i<keys.size();i++){
+            if(s.equals(keys.get(i).name)){
+                keys.add(new Key(s,keyCode,limit));
+                System.out.println("Adding Mapping 1 2 "+s);
+                return;
             }
         }
         keys.add(new Key(s,keyCode,limit));
+        System.out.println("Adding Mapping 1 1 "+s);
     }
 
     public void addMapping(String s, int keyCode){
-        for(Key key: keys){
-            if(s.equals(key.name)){
+        for(int i = 0; i<keys.size();i++){
+            if(s.equals(keys.get(i).name)){
+                keys.add(new Key(s,keyCode));
+                System.out.println("Adding Mapping 2 2 "+s);
                 return;
             }
         }
         keys.add(new Key(s,keyCode));
+        System.out.println("Adding Mapping 2 1 "+s);
     }
 
     public boolean isPressed(String s){

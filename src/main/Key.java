@@ -29,8 +29,8 @@ public class Key {
         }
         if(limit < 0)return;
 
-        pressCount++;
         if(pressed) {
+            pressCount++;
             if (pressCount >= limit){
                 pressCount = 0;
                 fired = true;
