@@ -9,7 +9,7 @@ import java.util.logging.Level;
 
 public class OldMultiplayerGameState extends State {
     private static double cellWidth = 0.0;
-    private Food food,food2;
+    private Food food;
     private Snake snake,snake2;
     private Score score,score2;
     private Input inputMessage;
@@ -31,7 +31,6 @@ public class OldMultiplayerGameState extends State {
         Point location = generatePosition();
         food = new Food(location.x,location.y,(int)cellWidth);
         location = generatePosition();
-        food2 = new Food(location.x,location.y,(int)cellWidth);
         score = new Score(100,middle, 150,20, ALIGN.CENTER);
         score2 = new Score(100,middle + 60, 150,20, ALIGN.CENTER);
         Message infoMessage1 = new Message( 100, middle - 125,150,25,"ESC: Pausa/Reanudar");
@@ -46,7 +45,6 @@ public class OldMultiplayerGameState extends State {
         addEntity(snake);
         addEntity(snake2);
         addEntity(food);
-        addEntity(food2);
         addEntity(score);
         addEntity(score2);
         addEntity(infoMessage1);
