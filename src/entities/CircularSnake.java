@@ -2,6 +2,7 @@ package entities;
 
 import main.Application;
 import main.InputManager;
+import states.MultiplayerGameState;
 
 import javax.swing.text.Segment;
 import java.awt.*;
@@ -73,7 +74,18 @@ public class CircularSnake extends Entity{
             angle-=turningSpeed;
             if(angle<0) angle = Math.PI*2;
         }
-
+        if(input.isPressed("SHOOT"+player)){
+            System.out.println("shooting");
+            List<Bullet> pool = MultiplayerGameState.bulletsPool;
+            Bullet bullet;
+            if(pool.size()>0) {
+                bullet =pool.remove(0);
+            }else{
+                bullet = new Bullet(x,y);
+            }
+            bullet.shoot(player,angle,(int)head[0],(int)head[1]);
+            MultiplayerGameState.addBullet(bullet);
+        }
     }
 
     private void followHead() {

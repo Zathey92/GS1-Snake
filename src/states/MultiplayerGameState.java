@@ -2,11 +2,11 @@ package states;
 
 import entities.*;
 import main.*;
-
-import javax.swing.text.Position;
 import java.awt.*;
 
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -17,6 +17,8 @@ public class MultiplayerGameState extends State {
     private CircularSnake player1,player2;
     private int state;
     private SoundManager soundManager;
+    public static List<Bullet> bulletsPool = new ArrayList<Bullet>();
+    public static List<Bullet> activeBullets = new ArrayList<Bullet>();
 
 
     public MultiplayerGameState(){
@@ -46,6 +48,9 @@ public class MultiplayerGameState extends State {
     @Override
     public void render(Graphics g){
         super.render(g);
+        for(Bullet bullet: activeBullets){
+            bullet.render(g);
+        }
     }
 
     @Override
@@ -71,6 +76,9 @@ public class MultiplayerGameState extends State {
                 logger.warning("El estado " + state + "no existe");
         }
         super.update();
+        for(Bullet bullet: activeBullets){
+            bullet.update();
+        }
 
     }
     @Override
@@ -129,8 +137,14 @@ public class MultiplayerGameState extends State {
         if(input.isPressed("ENTER" )){
             message.isVisible = false;
             init();
+            //food.setHasCollide(generatePosition()); No necesario en multiplayer
             state = 0;
         }
+    }
+    public static void addBullet(Bullet bullet){
+        System.out.println("add");
+        activeBullets.add(bullet);
+
     }
 
 }

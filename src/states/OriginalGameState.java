@@ -177,4 +177,5 @@ public class OriginalGameState extends State {
         input.addMapping("ENTER", KeyEvent.VK_ENTER);
         super.initMapping();
     }
+
 }
