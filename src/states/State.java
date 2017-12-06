@@ -2,6 +2,7 @@ package states;
 
 
 import entities.Entity;
+import main.DisplayManager;
 import main.InputManager;
 import main.StateManager;
 
@@ -16,6 +17,7 @@ public abstract class State {
     protected List<Entity> entities= new ArrayList<Entity>();
     protected Logger logger;
     protected InputManager input;
+    Canvas canvas;
     public boolean enter;
 
     public void addEntity(Entity e){
@@ -35,6 +37,7 @@ public abstract class State {
         }
     }
     public void init(){
+        canvas = DisplayManager.getInstance().getCanvas();
         enter = true;
         logger = java.util.logging.Logger.getLogger(getClass().getName());
         input = InputManager.getInstance();
