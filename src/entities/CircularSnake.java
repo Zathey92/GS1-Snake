@@ -16,18 +16,19 @@ public class CircularSnake extends Entity{
     private double angle;
     private double speed,turningSpeed;
     public double freq;
-    private double updateCounter;
     private double[][] segments;
     private LinkedList<double[]> path;
     public double[] head,eyePosition;
     public int player;
     public boolean collision;
+    private int fireCounter, timeBetweenShoots = 10;
+    private boolean firing;
 
     public CircularSnake(int x,int y, int radius, int player) {
         super(x-radius, y+radius);
 
         this.player = player;
-        this.speed = 2.0;
+        this.speed = 2.5;
         this.turningSpeed = .2;
         this.radius = radius;
 
@@ -37,25 +38,23 @@ public class CircularSnake extends Entity{
     public void init(){
         this.angle = 0;
         collision=false;
-        freq =  Application.amountOfTicks/3;
+        this.fireCounter=timeBetweenShoots;
+        this.firing = false;
         path = new LinkedList<>();
         head = new double[]{x,y};
         eyePosition = new double[] {x,y};
         double[] body = new double[]{x-10,y};
         double[] tail = new double[]{x-20,y};
         segments=new double[][]{head,body,tail};
-        updateCounter = 0;
     }
 
     @Override
     public void update() {
-        updateCounter++;
-        if(updateCounter>freq&&!collision){
+        if(!collision){
             getUserInput();
-            updateCounter = 0;
-            double delta = Application.delta;
-            head[0] +=speed*Math.cos(angle)*2;
-            head[1] -=speed*Math.sin(angle)*2;
+
+            head[0] +=speed*Math.cos(angle);
+            head[1] -=speed*Math.sin(angle);
             segments[0]=head;
             path.addFirst(head.clone());
             calcEyePosition();
@@ -74,17 +73,22 @@ public class CircularSnake extends Entity{
             angle-=turningSpeed;
             if(angle<0) angle = Math.PI*2;
         }
-        if(input.isPressed("SHOOT"+player)){
-            System.out.println("shooting");
-            List<Bullet> pool = MultiplayerGameState.bulletsPool;
-            Bullet bullet;
-            if(pool.size()>0) {
-                bullet =pool.remove(0);
-            }else{
-                bullet = new Bullet(x,y);
+        if(input.isPressed("SHOOT"+player)) {
+            fireCounter++;
+            firing = fireCounter > timeBetweenShoots;
+            if(firing){
+                fireCounter=0;
+                System.out.println("shooting");
+                List<Bullet> pool = MultiplayerGameState.bulletsPool;
+                Bullet bullet;
+                if(pool.size()>0) {
+                    bullet =pool.remove(0);
+                }else{
+                    bullet = new Bullet(x,y);
+                }
+                bullet.shoot(player,angle,(int)head[0],(int)head[1]);
+                MultiplayerGameState.addBullet(bullet);
             }
-            bullet.shoot(player,angle,(int)head[0],(int)head[1]);
-            MultiplayerGameState.addBullet(bullet);
         }
     }
 

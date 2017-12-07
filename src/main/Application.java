@@ -8,14 +8,15 @@ import java.util.logging.Logger;
 public class Application implements Runnable {
     private Thread thread;
     public static boolean isRunning;
-    public final static double amountOfTicks = 120.0; //Numero de updates por segundo
-    public static double delta;
+    public final static double amountOfTicks = 30.0; //Numero de updates por segundo
+    public double targetTime = 1000 / amountOfTicks;
+    public long lastTime, totalTime = 0, waitTime, time;
+    private int frameCount=0;
     private Logger logger;
     private Canvas canvas;
     private StateManager stateManager;
     private SoundManager soundManager;
-
-
+    private double averageFPS = 0;
 
 
     public Application(){
@@ -31,33 +32,27 @@ public class Application implements Runnable {
 
     public void run() {
         logger.log(Level.INFO," Aplication Running");
-        long lastTime = System.nanoTime();
-
-        double ns = 100000000 / amountOfTicks;
-        delta = 0;
-        int updates = 0;
-        int frames =0;
-        long timer =System.currentTimeMillis();
+        lastTime = System.nanoTime();
         stateManager.init();
         while(isRunning){
             long now = System.nanoTime();
-            delta += (double)(now-lastTime) / (long)ns; //diferencia de tiempo en cada loop
             lastTime=now;
 
-            if(delta>=1){
-                stateManager.update();
-                updates++;
-                delta--;
-                frames++;
-                render();
+            stateManager.update();
+            render();
+
+            time=(now-lastTime) /100000000;
+            double waitTime = targetTime-time;
+            try {
+                Thread.sleep((long)waitTime);
+            }catch (Exception e){
             }
-            //render();
-            //frames++;
-            if(System.currentTimeMillis() - timer > 1000){
-                timer += 100;
-                logger.log(Level.FINE,updates + " Ticks, Fps " + frames);
-                updates=0;
-                frames=0;
+            totalTime += System.nanoTime()-lastTime;
+            frameCount++;
+            if(frameCount==amountOfTicks){
+                averageFPS = 1000.0/((totalTime/frameCount)/1000000);
+                frameCount=0;
+                totalTime=0;
             }
         }
         logger.log(Level.INFO," Stopping");

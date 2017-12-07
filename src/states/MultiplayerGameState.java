@@ -67,6 +67,7 @@ public class MultiplayerGameState extends State {
             case 0:
                 checkWallCollision();
                 checkFoodCollision();
+                checkBulletCollision();
                 break;
             case 1:
                 player1.collision=true;
@@ -145,6 +146,16 @@ public class MultiplayerGameState extends State {
         System.out.println("add");
         activeBullets.add(bullet);
 
+    }
+
+    public void checkBulletCollision(){
+        for(int i =0; i<activeBullets.size();i++){
+            Bullet bullet = activeBullets.get(i);
+            if(bullet.x2>canvas.getWidth()||bullet.x2<0||bullet.y2>canvas.getHeight()||bullet.y2<0){
+                activeBullets.remove(bullet);
+                bulletsPool.add(bullet);
+            }
+        }
     }
 
 }

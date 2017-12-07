@@ -46,6 +46,7 @@ public class InputManager implements KeyListener {
     public boolean isPressed(String s){
         for(Key key: keys){
             if(s.equals(key.name)){
+                if(key.pressed)System.out.println(s+" pressed");
                 return key.pressed;
             }
         }
@@ -57,6 +58,7 @@ public class InputManager implements KeyListener {
         boolean aux;
         for(Key key: keys){
             if(s.equals(key.name)){
+                if(key.fired)System.out.println(s+" fired");
                 aux = key.fired;
                 key.fired = false;
                 return aux;
@@ -90,6 +92,7 @@ public class InputManager implements KeyListener {
         }
         for(Key key: keys){
             if(e.getKeyCode()==key.keyCode){
+                System.out.println(key.name+" released");
                 key.toggle(false);
             }
         }
