@@ -99,9 +99,9 @@ public class MultiplayerGameState extends State {
     }
     private static Point generatePosition(){
         Canvas canvas = DisplayManager.getInstance().getCanvas();
-        int xaux = ((int) (Math.random() *canvas.getWidth()));
-        int yaux = ((int) (Math.random() *canvas.getHeight()));
-        return new Point(xaux,yaux);
+        int xaux = ((int) (Math.random() *(canvas.getWidth()-50)));
+        int yaux = ((int) (Math.random() *(canvas.getHeight()-50)));
+        return new Point(25+xaux,25+yaux);
     }
 
     private void checkFoodCollision(CircularSnake player){

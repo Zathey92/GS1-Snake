@@ -12,6 +12,7 @@ import java.util.List;
 
 public class CircularSnake extends Entity{
 
+    private final Color color;
     public int radius;
     public int score;
     private double angle;
@@ -29,6 +30,11 @@ public class CircularSnake extends Entity{
         super(x-radius, y+radius);
 
         this.player = player;
+        if(player==0){
+            this.color = Color.orange;
+        }else{
+            this.color = Color.pink;
+        }
         this.speed = 2.5;
         this.turningSpeed = .2;
         this.radius = radius;
@@ -127,7 +133,7 @@ public class CircularSnake extends Entity{
 
     @Override
     public void render(Graphics g) {
-        g.setColor(Color.pink);
+        g.setColor(this.color);
         g.fillOval((int)(head[0]-radius),(int)(head[1]-radius),radius*2,radius*2);
         for(double[] point: segments ){
             g.fillOval((int)point[0]-radius,(int)point[1]-radius,radius*2,radius*2);
