@@ -48,6 +48,5 @@ public class Bullet extends Entity{
     public void updateFarEnd(){
         this.x2 = x1+(int) (Math.cos(angle)*8);
         this.y2 = y1-(int) (Math.sin(angle)*8);
-        System.out.println(angle);
     }
 }

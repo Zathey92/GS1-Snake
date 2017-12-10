@@ -60,7 +60,6 @@ public class CircularSnake extends Entity{
     public void update() {
         if(!collision){
             getUserInput();
-
             head[0] +=speed*Math.cos(angle);
             head[1] -=speed*Math.sin(angle);
             segments[0]=head;
@@ -95,7 +94,6 @@ public class CircularSnake extends Entity{
             if(firing&&score>0){
                 score--;
                 fireCounter=0;
-                System.out.println("shooting");
                 List<Bullet> pool = MultiplayerGameState.bulletsPool;
                 Bullet bullet;
                 if(pool.size()>0) {
@@ -170,10 +168,20 @@ public class CircularSnake extends Entity{
         double[] segment = segments[segments.length-1];
         segments  = Arrays.copyOf(segments, segments.length + 1);
         segments[segments.length - 1] = segment;
-      }
-      public double[] removeSegment(){
+    }
+    private double[] removeSegment(){
           double[] segment = segments[segments.length-1];
           segments  = Arrays.copyOf(segments, segments.length -1);
           return segment;
-      }
+    }
+    public boolean checkSnakeSegmentCollision(double[] pos){
+        for(int i=1; i<segments.length;i++){
+            double dist = getDistance(pos,segments[i]);
+            if(dist<=(radius*2+speed)) {
+                collision=true;
+                return true;
+            }
+        }
+        return false;
+    }
 }

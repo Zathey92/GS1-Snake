@@ -63,6 +63,7 @@ public class MultiplayerGameState extends State {
             StateManager.lastState = StateManager.GAME_MENU;
             escape();
         }
+
         switch (state){
             case 0:
                 checkWallCollision(player1);
@@ -70,6 +71,7 @@ public class MultiplayerGameState extends State {
                 checkFoodCollision(player1);
                 checkFoodCollision(player2);
                 checkBulletCollision();
+                checkSnakesCollision();
                 break;
             case 1:
                 player1.collision=true;
@@ -85,6 +87,7 @@ public class MultiplayerGameState extends State {
         }
 
     }
+
     @Override
     public void initMapping() {
         input.addMapping("LEFT0", KeyEvent.VK_LEFT,1);
@@ -131,7 +134,7 @@ public class MultiplayerGameState extends State {
         double px =player.head[0];
         double py =player.head[1];
         if (px+player.radius>canvas.getWidth()|| px<player.radius || py <player.radius || py+player.radius>canvas.getHeight()){
-            winMessage.text= "Player "+Integer.toString(player.player)+" ha ganado!";
+            winMessage.text= "Player "+Integer.toString(player.player+1)+" ha ganado!";
             state=1;
         }
     }
@@ -146,9 +149,13 @@ public class MultiplayerGameState extends State {
         }
     }
     public static void addBullet(Bullet bullet){
-        System.out.println("add");
         activeBullets.add(bullet);
 
+    }
+
+    private void checkSnakesCollision() {
+        if(player1.checkSnakeSegmentCollision(player2.head)) win(player1.player);
+        if(player2.checkSnakeSegmentCollision(player1.head)) win(player2.player);
     }
 
     private void checkBulletCollision(){
@@ -182,7 +189,7 @@ public class MultiplayerGameState extends State {
     }
 
     public static void win(int player){
-        winMessage.text= "Player "+Integer.toString(player)+" ha ganado!";
+        winMessage.text= "Player "+Integer.toString(player+1)+" ha ganado!";
         state=1;
     }
 
