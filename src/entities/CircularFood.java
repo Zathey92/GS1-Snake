@@ -30,6 +30,7 @@ public class CircularFood extends Entity {
     @Override
     public void update(){
         if(hasCollide) {
+            System.out.println("food");
             Point p = nextPosition;
             x = p.x; y=p.y;
             hasCollide = false;

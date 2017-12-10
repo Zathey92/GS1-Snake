@@ -30,6 +30,8 @@ public class MultiplayerGameState extends State {
         entities.add(food);
         player1= new CircularSnake(50,100,25,0);
         entities.add(player1);
+        player2= new CircularSnake(50,300,25,1);
+        entities.add(player2);
         int middle = DisplayManager.getInstance().getCanvas().getWidth()/2;
         winMessage = new Message(middle+200,middle,200,110,"Has ganado!", false);
         loseMessage = new Message(middle+200,middle,200,110 ,"Has perdido...", false);
@@ -65,12 +67,15 @@ public class MultiplayerGameState extends State {
         }
         switch (state){
             case 0:
-                checkWallCollision();
-                checkFoodCollision();
+                checkWallCollision(player1);
+                checkWallCollision(player2);
+                checkFoodCollision(player1);
+                checkFoodCollision(player2);
                 checkBulletCollision();
                 break;
             case 1:
                 player1.collision=true;
+                player2.collision=true;
                 showMessage(winMessage);
                 break;
             default:
@@ -101,21 +106,19 @@ public class MultiplayerGameState extends State {
         return new Point(xaux,yaux);
     }
 
-    private void checkFoodCollision(){
-        double dx = food.x- player1.head[0];
-        double dy = food.y- player1.head[1];
+    private void checkFoodCollision(CircularSnake player){
+        double dx = food.x- player.head[0];
+        double dy = food.y- player.head[1];
         double[] foodPos = new double[]{food.x,food.y};
 
-        if( player1.getDistance(player1.head,foodPos)<player1.radius){
+        if( player.getDistance(player.head,foodPos)<player.radius){
             soundManager.play("eat");
             Point location = generatePosition();
-            player1.addSegment();
-            if(player1.freq > 0){
-                player1.freq -= 5;
+            player.addSegment();
+            if(player.freq > 0){
+                player.freq -= 5;
             }else{
-                input.clearBuffer();
                 soundManager.play("win");
-                state = 2;
             }
             ActionManager.getInstance().action(3,null);
             //score.refreshScore();
@@ -124,10 +127,10 @@ public class MultiplayerGameState extends State {
         }
 
     }
-    private void checkWallCollision(){
-        double px =player1.head[0];
-        double py =player1.head[1];
-        if (px+player1.radius>canvas.getWidth()|| px<player1.radius || py <player1.radius || py+player1.radius>canvas.getHeight()){
+    private void checkWallCollision(CircularSnake player){
+        double px =player.head[0];
+        double py =player.head[1];
+        if (px+player.radius>canvas.getWidth()|| px<player.radius || py <player.radius || py+player.radius>canvas.getHeight()){
             System.out.println("Colisión");
             state=1;
         }

@@ -150,7 +150,7 @@ public class OriginalGameState extends State {
                 location = generatePosition();
             }
             if(snake.freq > 0){
-                snake.freq -= 5;
+                snake.freq -= snake.freq/10;
             }else{
                 input.clearBuffer();
                 soundManager.play("win");

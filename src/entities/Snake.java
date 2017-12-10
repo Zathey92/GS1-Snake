@@ -31,7 +31,7 @@ public class Snake extends Entity {
 
     @Override
     public void init(){
-        freq =  Application.amountOfTicks*2;
+        freq =  Application.amountOfTicks/2;
         updateCounter = 0;
         collision = false;
         isGrowing = false;
