@@ -13,6 +13,7 @@ import java.util.List;
 public class CircularSnake extends Entity{
 
     public int radius;
+    public int score;
     private double angle;
     private double speed,turningSpeed;
     public double freq;
@@ -37,6 +38,7 @@ public class CircularSnake extends Entity{
     @Override
     public void init(){
         this.angle = 0;
+        this.score=0;
         collision=false;
         this.fireCounter=timeBetweenShoots;
         this.firing = false;
@@ -60,6 +62,14 @@ public class CircularSnake extends Entity{
             calcEyePosition();
             followHead();
         }
+        if(score<0){
+            if(segments.length>3) {
+                score += 20;
+                removeSegment();
+            }else{
+                MultiplayerGameState.win(1 - player);
+            }
+        }
 
     }
 
@@ -76,7 +86,8 @@ public class CircularSnake extends Entity{
         if(input.isPressed("SHOOT"+player)) {
             fireCounter++;
             firing = fireCounter > timeBetweenShoots;
-            if(firing){
+            if(firing&&score>0){
+                score--;
                 fireCounter=0;
                 System.out.println("shooting");
                 List<Bullet> pool = MultiplayerGameState.bulletsPool;
@@ -138,6 +149,8 @@ public class CircularSnake extends Entity{
         int eyeradius = radius-4;
         g.setColor(Color.yellow);
         g.fillOval((int)eyePosition[0]-eyeradius/2,(int)eyePosition[1]-eyeradius/2,eyeradius,eyeradius);
+        g.setColor(Color.black);
+        g.drawString(Integer.toString(score),(int)eyePosition[0]-4,(int)eyePosition[1]+4);
     }
 
     public double getDistance(double[] pointFrom, double[] pointTo ){
@@ -151,5 +164,10 @@ public class CircularSnake extends Entity{
         double[] segment = segments[segments.length-1];
         segments  = Arrays.copyOf(segments, segments.length + 1);
         segments[segments.length - 1] = segment;
+      }
+      public double[] removeSegment(){
+          double[] segment = segments[segments.length-1];
+          segments  = Arrays.copyOf(segments, segments.length -1);
+          return segment;
       }
 }

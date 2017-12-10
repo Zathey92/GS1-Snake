@@ -11,20 +11,19 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class MultiplayerGameState extends State {
-    private Message winMessage, loseMessage, nameMessage;
+    public static Message winMessage;
     private Logger logger;
     private CircularFood food;
     private CircularSnake player1,player2;
-    private int state;
+    public static int state;
     private SoundManager soundManager;
     public static List<Bullet> bulletsPool = new ArrayList<Bullet>();
-    public static List<Bullet> activeBullets = new ArrayList<Bullet>();
+    private static List<Bullet> activeBullets = new ArrayList<Bullet>();
 
 
     public MultiplayerGameState(){
         soundManager = SoundManager.getInstance();
         logger= Logger.getLogger(getClass().getName());
-        entities.add(new Score(25,25,50,50));
         Point pos = generatePosition();
         food = new CircularFood(pos.x,pos.y,5);
         entities.add(food);
@@ -33,10 +32,9 @@ public class MultiplayerGameState extends State {
         player2= new CircularSnake(50,300,25,1);
         entities.add(player2);
         int middle = DisplayManager.getInstance().getCanvas().getWidth()/2;
-        winMessage = new Message(middle+200,middle,200,110,"Has ganado!", false);
-        loseMessage = new Message(middle+200,middle,200,110 ,"Has perdido...", false);
+        winMessage = new Message(middle,middle-180,250,60,"Player X ha ganado!", false);
         entities.add(winMessage);
-        entities.add(loseMessage);
+
     }
 
     @Override
@@ -99,7 +97,7 @@ public class MultiplayerGameState extends State {
 
         super.initMapping();
     }
-    public static Point generatePosition(){
+    private static Point generatePosition(){
         Canvas canvas = DisplayManager.getInstance().getCanvas();
         int xaux = ((int) (Math.random() *canvas.getWidth()));
         int yaux = ((int) (Math.random() *canvas.getHeight()));
@@ -114,14 +112,16 @@ public class MultiplayerGameState extends State {
         if( player.getDistance(player.head,foodPos)<player.radius){
             soundManager.play("eat");
             Point location = generatePosition();
-            player.addSegment();
-            if(player.freq > 0){
-                player.freq -= 5;
-            }else{
+            player.score+=5;
+            if(player.score>=20){
+                player.score-=20;
+                player.addSegment();
                 soundManager.play("win");
+                if(player.freq > 0){
+                    player.freq -= 5;
+                }
             }
             ActionManager.getInstance().action(3,null);
-            //score.refreshScore();
             food.setHasCollide(location);
 
         }
@@ -131,7 +131,7 @@ public class MultiplayerGameState extends State {
         double px =player.head[0];
         double py =player.head[1];
         if (px+player.radius>canvas.getWidth()|| px<player.radius || py <player.radius || py+player.radius>canvas.getHeight()){
-            System.out.println("Colisión");
+            winMessage.text= "Player "+Integer.toString(player.player)+" ha ganado!";
             state=1;
         }
     }
@@ -151,14 +151,39 @@ public class MultiplayerGameState extends State {
 
     }
 
-    public void checkBulletCollision(){
+    private void checkBulletCollision(){
         for(int i =0; i<activeBullets.size();i++){
             Bullet bullet = activeBullets.get(i);
+            double[] bulletPos = new double[]{bullet.x2,bullet.y2};
+            double dist=0;
+
             if(bullet.x2>canvas.getWidth()||bullet.x2<0||bullet.y2>canvas.getHeight()||bullet.y2<0){
                 activeBullets.remove(bullet);
                 bulletsPool.add(bullet);
+            }else{
+                if(bullet.owner==0){
+                    dist = player2.getDistance(player2.head,bulletPos);
+                    if(dist<player2.radius) {
+                        player2.score -=10;
+                        activeBullets.remove(bullet);
+                        bulletsPool.add(bullet);
+                    }
+
+                }else{
+                    dist = player1.getDistance(player1.head,bulletPos);
+                    if(dist<player1.radius){
+                        player1.score -=10;
+                        activeBullets.remove(bullet);
+                        bulletsPool.add(bullet);
+                    }
+                }
             }
         }
+    }
+
+    public static void win(int player){
+        winMessage.text= "Player "+Integer.toString(player)+" ha ganado!";
+        state=1;
     }
 
 }

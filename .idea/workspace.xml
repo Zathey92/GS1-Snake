@@ -11,14 +11,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4c371c6c-2fd6-4cef-a077-d6d38b71897f" name="Default" comment="ADD: samuel part + collision except out of playground">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/Snake/entities/Snake.class" afterPath="$PROJECT_DIR$/out/production/Snake/entities/Snake.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/Snake/main/Application.class" afterPath="$PROJECT_DIR$/out/production/Snake/main/Application.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LeaderBoard.txt" afterPath="$PROJECT_DIR$/LeaderBoard.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/entities/CircularFood.java" afterPath="$PROJECT_DIR$/src/entities/CircularFood.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/entities/Snake.java" afterPath="$PROJECT_DIR$/src/entities/Snake.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/entities/CircularSnake.java" afterPath="$PROJECT_DIR$/src/entities/CircularSnake.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/states/MultiplayerGameState.java" afterPath="$PROJECT_DIR$/src/states/MultiplayerGameState.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/states/OriginalGameState.java" afterPath="$PROJECT_DIR$/src/states/OriginalGameState.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -33,15 +28,35 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="MultiplayerGameState.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="MultiplayerGameState.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/states/MultiplayerGameState.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="345">
-              <caret line="77" column="39" lean-forward="false" selection-start-line="77" selection-start-column="39" selection-end-line="77" selection-end-column="39" />
+            <state relative-caret-position="396">
+              <caret line="184" column="58" lean-forward="false" selection-start-line="184" selection-start-column="58" selection-end-line="184" selection-end-column="58" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#621#629#0" expanded="true" />
+                <element signature="e#608#616#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="CircularSnake.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/entities/CircularSnake.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="353">
+              <caret line="65" column="35" lean-forward="true" selection-start-line="65" selection-start-column="35" selection-end-line="65" selection-end-column="35" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Bullet.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/entities/Bullet.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="311">
+              <caret line="22" column="39" lean-forward="false" selection-start-line="22" selection-start-column="39" selection-end-line="22" selection-end-column="39" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -142,12 +157,12 @@
         <option value="$PROJECT_DIR$/src/entities/Bullet.java" />
         <option value="$PROJECT_DIR$/src/main/Key.java" />
         <option value="$PROJECT_DIR$/src/main/InputManager.java" />
-        <option value="$PROJECT_DIR$/src/entities/CircularSnake.java" />
         <option value="$PROJECT_DIR$/src/main/Application.java" />
         <option value="$PROJECT_DIR$/src/entities/CircularFood.java" />
         <option value="$PROJECT_DIR$/src/entities/Snake.java" />
         <option value="$PROJECT_DIR$/src/states/OriginalGameState.java" />
         <option value="$PROJECT_DIR$/src/states/MultiplayerGameState.java" />
+        <option value="$PROJECT_DIR$/src/entities/CircularSnake.java" />
       </list>
     </option>
   </component>
@@ -394,7 +409,7 @@
       <workItem from="1512462626647" duration="5169000" />
       <workItem from="1512569439514" duration="14466000" />
       <workItem from="1512637122585" duration="8542000" />
-      <workItem from="1512902458566" duration="1297000" />
+      <workItem from="1512902458566" duration="4538000" />
     </task>
     <task id="LOCAL-00001" summary="ADD: return to main menu BUG: eventkey se guardan en el siguiente juego y se vuelve loco">
       <created>1511640658215</created>
@@ -421,7 +436,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="57834000" />
+    <option name="totallyTimeSpent" value="61075000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -620,6 +635,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="340">
           <caret line="27" column="26" lean-forward="false" selection-start-line="27" selection-start-column="26" selection-end-line="27" selection-end-column="26" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -666,13 +682,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="476">
           <caret line="37" column="19" lean-forward="false" selection-start-line="37" selection-start-column="8" selection-end-line="37" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/entities/Bullet.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="374">
-          <caret line="22" column="39" lean-forward="false" selection-start-line="22" selection-start-column="39" selection-end-line="22" selection-end-column="39" />
           <folding />
         </state>
       </provider>
@@ -697,14 +706,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="510">
           <caret line="32" column="0" lean-forward="false" selection-start-line="32" selection-start-column="0" selection-end-line="33" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/entities/CircularSnake.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1003">
-          <caret line="94" column="30" lean-forward="false" selection-start-line="94" selection-start-column="30" selection-end-line="94" selection-end-column="30" />
           <folding />
         </state>
       </provider>
@@ -741,14 +742,30 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/entities/Bullet.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="311">
+          <caret line="22" column="39" lean-forward="false" selection-start-line="22" selection-start-column="39" selection-end-line="22" selection-end-column="39" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/states/MultiplayerGameState.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="345">
-          <caret line="77" column="39" lean-forward="false" selection-start-line="77" selection-start-column="39" selection-end-line="77" selection-end-column="39" />
+        <state relative-caret-position="396">
+          <caret line="184" column="58" lean-forward="false" selection-start-line="184" selection-start-column="58" selection-end-line="184" selection-end-column="58" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#621#629#0" expanded="true" />
+            <element signature="e#608#616#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/entities/CircularSnake.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="353">
+          <caret line="65" column="35" lean-forward="true" selection-start-line="65" selection-start-column="35" selection-end-line="65" selection-end-column="35" />
+          <folding />
         </state>
       </provider>
     </entry>
