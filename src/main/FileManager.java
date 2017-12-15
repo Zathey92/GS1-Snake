@@ -5,9 +5,7 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.logging.Logger;
 
 import static java.nio.file.StandardOpenOption.APPEND;
@@ -45,7 +43,14 @@ public class FileManager {
         } catch (IOException e) {
             logger.warning("No se pudo leer el archivo");
         }
-        return result;
+
+        return getTopTen(result);
+    }
+
+    public List<LeaderBoardData> getTopTen(List<LeaderBoardData> leaderBoardData){
+        Collections.sort(leaderBoardData, (leaderBoardData1, t1) -> t1.getPoints() - leaderBoardData1.getPoints());
+        return leaderBoardData.subList(0,10);
+
     }
 
     public static FileManager getInstance() {
