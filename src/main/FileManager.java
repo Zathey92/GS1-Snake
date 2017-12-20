@@ -48,8 +48,13 @@ public class FileManager {
     }
 
     public List<LeaderBoardData> getTopTen(List<LeaderBoardData> leaderBoardData){
+        int max;
+        if (leaderBoardData.size() < 10) max = leaderBoardData.size();
+        else{
+            max = 10;
+        }
         Collections.sort(leaderBoardData, (leaderBoardData1, t1) -> t1.getPoints() - leaderBoardData1.getPoints());
-        return leaderBoardData.subList(0,10);
+        return leaderBoardData.subList(0,max);
 
     }
 
